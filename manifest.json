@@ -1,0 +1,37 @@
+﻿{
+	"name": "AngularChromeEx",
+	"version": "1.0",
+	"manifest_version": 2,
+
+	"description": "Chrome extensions with AngularJS",
+	"icons": {
+		"16": "img/Untitled.png",
+		"48": "img/Untitled.png",
+		"128": "img/Untitled.png"
+	},
+	"browser_action": {
+		"default_icon": "img/Untitled.png",
+		"default_popup": "popup.html",
+		"default_title": "AngularJSChromeEx"
+	},
+	"options_page": "options.html",
+	"content_scripts": [ {
+		"js": [
+	       "js/lib/jquery-1.8.2.min.js",
+	       "js/app/content.js"
+	    ],
+		"matches": [ "*://*/*" ],
+		"run_at": "document_start"
+	} ],
+	"minimum_chrome_version": "18",
+	"permissions":[
+		"http://*/",
+	    "http://*/*",
+	    "https://*/*",
+	    "unlimitedStorage",
+	    "contextMenus",
+	    "cookies",
+	    "tabs",
+	    "notifications"
+    ]
+}
