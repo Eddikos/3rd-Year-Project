@@ -5,18 +5,11 @@
     <head>
         <link rel="stylesheet" href="css/app/popup.css">
         <!--<link rel="stylesheet" href="css/lib/bootstrap.css">-->
-          
         <script src="js/lib/angular.min.js"></script>
-        
-        <!-- Next have a look on APP.js
-              It just defines Angular Modules,
-              which carries the same name
-              as your HTML NG-APP does -->
+        <!-- Next have a look on APP.js It just defines Angular Modules, which carries the same name as your HTML NG-APP does -->
         <script src="js/app/app.js"></script>
         
-        <!--Then go to POPUP.js ... it is being added
-            to the module that you have just
-            created in APP.js-->
+        <!--Then go to POPUP.js ... it is being added to the module that you have just created in APP.js-->
         <script src="js/app/popup.js"></script>
     </head>
     <body id="popup">
@@ -26,15 +19,28 @@
 
         <div ng-controller="PageController">
             <div>{{message}}</div>
-            <h2>Page:</h2>
-            <div>{{title}}</div>
-            <div><a href="{{url}}">{{url}}</a></div>
-            <h2>Has Links and Images:</h2>
-            <ul>
-                <li ng-repeat="pageInfo in pageInfos">
-                    <div><a href="{{pageInfo.url}}">{{pageInfo.url}}</a></div>
-                </li>                       
-            </ul>
+            <div>Page Title: {{title}}</div>
+            <div>Page URL: <a href="{{url}}">{{url}}</a></div>
+            </hr>
+            <br/>
+
+
+
+            <select ng-model="test" ng-options="t.name for t in tests">
+               <!-- <option value="">(blank)</option> -->
+            </select>
+            <p>URL of the template: <code>{{test.url}}</code></p>
+              <hr/>
+
+            <div class="slide-animate-container">
+                <div class="slide-animate" ng-include="test.url"></div>
+            </div>
+
+
+            
+
+
+
         </div>
     </body>
 </html>

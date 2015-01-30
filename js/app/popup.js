@@ -38,7 +38,14 @@ myApp.controller("PageController", function ($scope, pageInfoService) {
         
         $scope.$apply();
     });
+
+
+    $scope.tests =
+    [ { name: 'test1.html', url: 'tests/test1.html'},
+      { name: 'test2.html', url: 'tests/test2.html'},
+      { name: 'test3.html', url: 'tests/test3.html'},
+      { name: 'test4.html', url: 'tests/test4.html'},
+      { name: 'test5.html', url: 'tests/test5.html'} ];
+    $scope.test = $scope.tests[0];
+
 });
-
-
-

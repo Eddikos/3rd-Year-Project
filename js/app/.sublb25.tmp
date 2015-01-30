@@ -11,43 +11,24 @@ function (request, sender, sendResponse) {
     // And it will listen specifically for this PageInfo action
     if (request.action == 'PageInfo') {
         var pageInfos = [];
-        var urls = [];
-        var imgs = [];
-        var numberOfLinks = 0;
-        var numberOfImages = 0;
-        var numberOfImagesWithAlt = 0;
-        var numberOfImagesWithEmptyAlt = 0
-
+        
         // Normal jQuery stuff
         $('a').each(function() {
-            numberOfLinks++;
-
-            var pageInfo = {};            
-
+            var pageInfo = {};
+            
             var href = $(this).attr('href');
 
             if (href != null && href.indexOf("http") == 0)
             {
                 //only add urls that start with http
-                pageInfo.url = href;
+                pageInfo.url = href
                 // Create and Array of URLs basically :)
-
-                console.log(pageInfo);
-                urls.push(pageInfo);
+                pageInfos.push(pageInfo);
             }
         });
         
-        pageInfos.push(urls);
-        console.log(urls);
-        console.log(pageInfos);
-
-
-
-
-        var imgCount = 0;
+        var dude = 0;
         $('img').each(function() {
-            numberOfImages++;
-
             var pageInfo = {};
             
             var alt = $(this).attr('alt');
@@ -55,26 +36,24 @@ function (request, sender, sendResponse) {
             if (alt != null)
             {
                 //only add urls that start with http
-                pageInfo.alt = alt
+                pageInfo.url = alt
                 // Create and Array of URLs basically :)
-                imgs.push(pageInfo);
-                imgCount++;
-            }
-            if (alt == null){
-                numberOfImagesWithEmptyAlt++;
+                pageInfos.push(pageInfo);
+                dude = dude + 1;
             }
         });
+        
+        console.log("dude");
 
-        pageInfos.push(imgs);
+        var theValue = dude;
 
-        // // Storing the data in Chrome.Storage.Sync
-        // console.log(imgCount);
+        console.log(theValue);
 
-        // chrome.storage.sync.set({'value': imgCount}, function() {
-        //     chrome.storage.sync.get("value", function(data) {
-        //         console.log("data", data.value);
-        //     });
-        // });
+        chrome.storage.sync.set({'value': 12}, function() {
+            chrome.storage.sync.get("value", function(data) {
+              console.log("data", data);
+            });
+          });
 
         // Send response Back to POPUP.js
         sendResponse(pageInfos);
