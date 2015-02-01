@@ -1,7 +1,8 @@
-			<h2>Links</h2>
+			<h3>Image ALT Attributes</h3>
             <ul>
-                <li ng-repeat="pageInfo in pageInfos[1]">
-                    <div><a href="{{pageInfo.alt}}">{{pageInfo.alt}}</a></div>
+                <li ng-repeat="pageImage in pageImages">
+                    <div class="hover-div" ng-mouseenter="myclass = 'highlight'" ng-mouseleave="myclass = 'lowlight'"><a href="{{pageImage.alt}}">{{pageImage.alt}}</a></div>
+                    <div ng-class="myclass">Some random text</div>
                 </li>                       
             </ul>
-            <pre>{{pageInfos[1]}}</pre>
+            <pre>{{pageImages}}</pre>

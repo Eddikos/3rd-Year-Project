@@ -4,7 +4,7 @@
 <html ng-app="AngularChromeEx" ng-csp> 
     <head>
         <link rel="stylesheet" href="css/app/popup.css">
-        <!--<link rel="stylesheet" href="css/lib/bootstrap.css">-->
+        <link rel="stylesheet" href="css/lib/css/bootstrap.css">
         <script src="js/lib/angular.min.js"></script>
         <!-- Next have a look on APP.js It just defines Angular Modules, which carries the same name as your HTML NG-APP does -->
         <script src="js/app/app.js"></script>
@@ -14,31 +14,23 @@
     </head>
     <body id="popup">
         <header>
-            <h1>AngularJS + Chrome Extension</h1>
+            <h2>AngularJS + Chrome Extension</h2>
         </header>
 
         <div ng-controller="PageController">
-            <div>{{message}}</div>
-            <div>Page Title: {{title}}</div>
-            <div>Page URL: <a href="{{url}}">{{url}}</a></div>
-            </hr>
-            <br/>
+            <p>{{message}}</p>
+            <p><b>Page Title</b>: {{title}}</p>
+            <p><b>Page URL</b>: <a href="{{url}}">{{url}}</a></p>
+            <hr/> <br/>
+            
 
+            <button type="submit" ng-click="back()" ng-if=" test.number > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+            <button type="submit" ng-click="forward()" ng-if=" test.number < 4 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
 
-
-            <select ng-model="test" ng-options="t.name for t in tests">
-               <!-- <option value="">(blank)</option> -->
-            </select>
-            <p>URL of the template: <code>{{test.url}}</code></p>
-              <hr/>
 
             <div class="slide-animate-container">
                 <div class="slide-animate" ng-include="test.url"></div>
             </div>
-
-
-            
-
 
 
         </div>

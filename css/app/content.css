@@ -1,0 +1,15 @@
+.black{
+	border: solid black 3px !important;
+}
+.blue{
+	border: solid blue 3px !important;
+}
+a {
+   	border: solid green 2px !important;
+}
+img{
+	border: solid red 2px !important;
+}
+.close{
+	border: solid black 2px !important
+}

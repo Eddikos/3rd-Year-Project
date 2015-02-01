@@ -21,7 +21,8 @@
 	       "js/app/content.js"
 	    ],
 		"matches": [ "*://*/*" ],
-		"run_at": "document_start"
+		"run_at": "document_start",
+		"css" : ["css/app/content.css"]
 	} ],
 	"minimum_chrome_version": "18",
 	"permissions":[
