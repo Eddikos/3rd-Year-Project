@@ -9,7 +9,7 @@
                     { name: 'Appropriate use of Tables', url: 'tests/test5.html', number: 4} ];
 
     // Default Value for test, to start from 1
-    $scope.test = $scope.tests[1];
+    $scope.test = $scope.tests[0];
 
     // Buttons for Previous/Next test
     $scope.back = function() {
@@ -18,11 +18,18 @@
 
     $scope.forward = function() {
         $scope.test = $scope.tests[$scope.test.number+1];
+    }
 
-        if ($scope.test.number == 2){
+
+    // Watch the test's number changing and use the functions accordingly
+    $scope.$watch('test.number', function(newVal, oldVal, scope) {
+        if (newVal == 1){
+             $scope.requestImages();
+        }
+        if (newVal == 2){
              $scope.requestLinks();
         }
-    }
+    });
 
 
 
@@ -35,19 +42,24 @@
             $scope.title = tabs[0].title;
             $scope.url = tabs[0].url;
             
-            // Then Send message directly to that one tab
-            // i.e. you are sending to the CONTENT.js script
-            // which is listening for messages
-            // And when the response comes from CONTENT.js, it will apply it straight away
-            chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageImages' }, function (response) {
-                $scope.pageImages = response;
-                $scope.$apply();
-            });
+            // Send messages to the main web page (CONTENTS.js), which has Listen function, and get the response asnwer
+            $scope.requestImages = function(){
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageImages' }, function (response) {
+                    $scope.pageImages = response;
+                    $scope.$apply();
+                });
+            };
 
             $scope.requestLinks = function(){
-                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageInfo' }, function (response) {
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageLinks' }, function (response) {
                     $scope.pageLinks = response;
                     $scope.$apply();
+                });
+            };
+
+            $scope.highlightImage = function(imageIndex, approved) {
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'HighlightImage', 'imageIndex': imageIndex, 'approved': approved }, function (response) {
+
                 });
             };
         }

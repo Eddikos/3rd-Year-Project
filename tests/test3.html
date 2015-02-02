@@ -1,7 +1,7 @@
 			<h3>Link Target Definitions</h3>
             <ul>
                 <li ng-repeat="pageLink in pageLinks">
-                    <div class="hover-div" ng-mouseenter="myclass = 'highlight'" ng-mouseleave="myclass = 'lowlight'"><a href="{{pageLink.url}}">{{pageLink.url}}</a></div>
+                    <div class="hover-div" ng-mouseenter="myclass = 'highlight'" ng-mouseleave="myclass = 'lowlight'"><a href="{{pageLink.link}}">{{pageLink.link}}</a></div>
                     <div ng-class="myclass">Some random text</div>
                 </li>                       
             </ul>

@@ -8,77 +8,54 @@ function (request, sender, sendResponse) {
 
     //debugger;
         
-        
-
-    // And it will listen specifically for this PageInfo action
-    if (request.action == 'PageInfo') {
-        var urls = [];
+    // And it will listen specifically for this PageLinks action
+    if (request.action == 'PageLinks') {
+        var links = [];
         var numberOfLinks = 0;
-        // Normal jQuery stuff
+
+        // Loop through all links found on the website
         $('a').each(function() {
             numberOfLinks++;
 
             var pageLink = {};            
-
             var href = $(this).attr('href');
 
-            if (href != null && href.indexOf("http") == 0)
-            {
-                //only add urls that start with http
-                pageLink.url = href;
-                // Create and Array of URLs basically :)
-
-                console.log(pageLink);
-                urls.push(pageLink);
+            if (href != null && href.indexOf("http") == 0) {
+                //only add links that start with http
+                pageLink.link = href;
+                // Create and Array of links basically :)
+                links.push(pageLink);
             }
         });
         
-        console.log(urls);
-
-
-
-
-        // // Storing the data in Chrome.Storage.Sync
-        // console.log(imgCount);
-
-        // chrome.storage.sync.set({'value': imgCount}, function() {
-        //     chrome.storage.sync.get("value", function(data) {
-        //         console.log("data", data.value);
-        //     });
-        // });
-
         // Send response Back to POPUP.js
-        sendResponse(urls);
+        sendResponse(links);
     }
+
+
 
     if (request.action == 'PageImages') {
         var imgs = [];
-        
         var numberOfImages = 0;
         var numberOfImagesWithAlt = 0;
         var numberOfImagesWithEmptyAlt = 0
-        
-
         var imgCount = 0;
+        
+        // Loop through all images on the website
         $('img').each(function(index) {
             numberOfImages++;
-
-            var pageInfo = {};
             
+            var img = {};
             var alt = $(this).attr('alt');
           
-            $(this).addClass("blue");
-            $(this).attr("ng-class","myclass");
-            $(this).addClass("" + index + "");
+            $(this).addClass("blue"+ index);
 
-            console.log($(this));
-
-            if (alt != null)
-            {
-                //only add urls that start with http
-                pageInfo.alt = alt
+            if (alt != null) {
+                // Store Image's Alt text and it's index (number) on the page
+                img.alt = alt;
+                img.index = index;
                 // Create and Array of URLs basically :)
-                imgs.push(pageInfo);
+                imgs.push(img);
                 imgCount++;
             }
             if (alt == null){
@@ -86,9 +63,27 @@ function (request, sender, sendResponse) {
             }
         });
 
-        
-        console.log(imgs);
-
+        // Send response Back to POPUP.js
         sendResponse(imgs);
     }
+
+
+    // Request that may come from the Doogle Extension in order to highlight Hovered image
+    if (request.action == 'HighlightImage') {
+        if (request.approved){
+            $('.blue' + request.imageIndex).addClass('black');
+        }
+        if (!request.approved){
+            $('.black').removeClass('black');
+        }
+    }
 });
+
+
+    // // Storing the data in Chrome.Storage.Sync
+
+    // chrome.storage.sync.set({'value': imgCount}, function() {
+    //     chrome.storage.sync.get("value", function(data) {
+    //         console.log("data", data.value);
+    //     });
+    // });
