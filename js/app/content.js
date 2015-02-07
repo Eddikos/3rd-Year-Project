@@ -77,6 +77,23 @@ function (request, sender, sendResponse) {
             $('.black').removeClass('black');
         }
     }
+
+
+
+    /*  
+        Test Number 4
+        performed by simply Disabling/Enabling all "LINK" tags from the webpageusing jQuery.
+        "link" tags are used to include External or Internal CSS onto a webpage
+        in the similar manner that "script" allows to include JavaScript files/code
+    */
+    if (request.action == 'ToggleCSS') {
+        if (request.disable){
+            $('link[rel="stylesheet"]').attr('disabled', 'disabled');
+        }
+        if (!request.disable){
+            $('link[rel="stylesheet"]').removeAttr('disabled');
+        }
+    }
 });
 
 

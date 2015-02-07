@@ -15,7 +15,6 @@
     $scope.back = function() {
         $scope.test = $scope.tests[$scope.test.number-1];
     }
-
     $scope.forward = function() {
         $scope.test = $scope.tests[$scope.test.number+1];
     }
@@ -24,10 +23,10 @@
     // Watch the test's number changing and use the functions accordingly
     $scope.$watch('test.number', function(newVal, oldVal, scope) {
         if (newVal == 1){
-             $scope.requestImages();
+            $scope.requestImages();
         }
         if (newVal == 2){
-             $scope.requestLinks();
+            $scope.requestLinks();
         }
     });
 
@@ -57,10 +56,13 @@
                 });
             };
 
+            //Highlight the images in MAIN.html page hovered in the POPUP.html, plus pass varaible (whether onMouseEnter or onMouseLeave)
             $scope.highlightImage = function(imageIndex, approved) {
-                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'HighlightImage', 'imageIndex': imageIndex, 'approved': approved }, function (response) {
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'HighlightImage', 'imageIndex': imageIndex, 'approved': approved }, function (response) { });
+            };
 
-                });
+            $scope.toggleCSS = function(disable) {
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'ToggleCSS', 'disable': disable }, function (response) { });
             };
         }
     });

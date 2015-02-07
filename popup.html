@@ -14,19 +14,21 @@
     </head>
     <body id="popup">
         <header>
-            <h2>AngularJS + Chrome Extension</h2>
+            <h2 class="text-center">AngularJS + Chrome Extension</h2>
         </header>
 
         <div ng-controller="PageController">
-            <p>{{message}}</p>
-            <p><b>Page Title</b>: {{title}}</p>
-            <p><b>Page URL</b>: <a href="{{url}}">{{url}}</a></p>
+            <p class="text-center">{{message}}</p>
+            <p class="text-center"><b>Page Title</b>: {{title}}</p>
+            <p class="text-center"><b>Page URL</b>: <a href="{{url}}">{{url}}</a></p>
             <hr/>
 
-            <button type="button" class="btn btn-lg btn-primary" disabled="disabled" ng-if=" test.number < 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-lg btn-primary" ng-click="back()" ng-if=" test.number > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-lg btn-primary" ng-click="forward()" ng-if=" test.number < 4 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-            <button type="button" class="btn btn-lg btn-primary" disabled="disabled" ng-if=" test.number > 3 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+            <div class="text-center">
+                <button type="button" class="btn btn-lg btn-primary" disabled="disabled" ng-if=" test.number < 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-lg btn-primary" ng-click="back()" ng-if=" test.number > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-lg btn-primary" ng-click="forward()" ng-if=" test.number < 4 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                <button type="button" class="btn btn-lg btn-primary" disabled="disabled" ng-if=" test.number > 3 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+            </div>
 
             <div class="slide-animate-container">
                 <div class="slide-animate" ng-include="test.url"></div>
