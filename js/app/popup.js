@@ -1,27 +1,18 @@
 ﻿myApp.controller("PageController", function ($scope) {
     // Will be passed to the PageController which is in the POPUP.html
-    $scope.message = "This is a demo extension for Web2Access Accessibility tool"; 
-        
-    $scope.tests = [ { name: 'Login, Signup and Other Forms Accessible', url: 'tests/test1.html', number: 0},
-                    { name: 'Image ALT Attributes', url: 'tests/test2.html', number: 1},
-                    { name: 'Link Target Definitions', url: 'tests/test3.html', number: 2},
-                    { name: 'Removal of Stylesheet', url: 'tests/test4.html', number: 3},
-                    { name: 'Appropriate use of Tables', url: 'tests/test5.html', number: 4} ];
-
-    // Default Value for test, to start from 1
-    $scope.test = $scope.tests[0];
+    $scope.message = "This is a demo extension for Web2Access Accessibility tool";     
 
     // Buttons for Previous/Next test
     $scope.back = function() {
-        $scope.test = $scope.tests[$scope.test.number-1];
+        $scope.test = $scope.tests[$scope.test.id-1];
     }
     $scope.forward = function() {
-        $scope.test = $scope.tests[$scope.test.number+1];
+        $scope.test = $scope.tests[$scope.test.id+1];
     }
 
 
-    // Watch the test's number changing and use the functions accordingly
-    $scope.$watch('test.number', function(newVal, oldVal, scope) {
+    // Watch the test's id changing and use the functions accordingly
+    $scope.$watch('test.id', function(newVal, oldVal, scope) {
         if (newVal == 1){
             $scope.requestImages();
         }
@@ -62,10 +53,107 @@
             };
 
             $scope.toggleCSS = function(disable) {
+                $scope.disabled = disable;
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'ToggleCSS', 'disable': disable }, function (response) { });
             };
         }
     });
+
+
+    $scope.tests = [{
+                        id: 0,
+                        name: 'Login, Signup and Other Forms Accessible',
+                        url: 'tests/test1.html',
+                        webPage: 'http://www.web2access.org.uk/test/1/',
+                        rank: [{
+                            description: "Failure with screen reader and keyboard - Lacks labels to forms.",
+                            value: 0
+                        }, {
+                            description: "Failure with screen reader (e.g. CAPTCHA without alternative or inaccessible forms).",
+                            value: 33
+                        }, {
+                            description: "CAPTCHA alternative offered or some accessible forms but some labels may be misleading.",
+                            value: 67
+                        }, {
+                            description: "Simple, accessible forms with clear labels e.g. 'username (email)' and 'password'.",
+                            value: 100
+                        }],
+                    }, {
+                        id: 1,
+                        name: 'Image ALT Attributes',
+                        url: 'tests/test2.html',
+                        webPage: 'http://www.web2access.org.uk/test/2/',
+                        rank: [{
+                            description: "None, detrimental to understanding of content. No option to add alt-tag if uploading image to web pages.",
+                            value: 0
+                        }, {
+                            description: "Inadequate/sparse alternative text even to actual website images not just those added by users.",
+                            value: 33
+                        }, {
+                            description: "Alternative text offered but lacks brevity or clarity e.g. image of duck.",
+                            value: 67
+                        }, {
+                            description: "Acceptable alternative text throughout.",
+                            value: 100
+                        }],
+                    }, {
+                        id: 2,
+                        name: 'Link Target Definitions',
+                        url: 'tests/test3.html',
+                        webPage: 'http://www.web2access.org.uk/test/3/',
+                        rank: [{
+                            description: "Non-defined links such as 'click here' or just 'download'.",
+                            value: 0
+                        }, {
+                            description: "Non-defined links such as 'click here' or just 'download', but with explanatory title attributes.",
+                            value: 33
+                        }, {
+                            description: "Most links understandable or provided in sentences. May have some duplicates.",
+                            value: 67
+                        }, {
+                            description: "Links fully appropriate, used throughout the site plus alternative navigation element.",
+                            value: 100
+                        }],
+                    }, {
+                        id: 3,
+                        name: 'Removal of Stylesheet',
+                        url: 'tests/test4.html',
+                        webPage: 'http://www.web2access.org.uk/test/5/',
+                        rank: [{
+                            description: "Page is unusable.",
+                            value: 0
+                        }, {
+                            description: "Content accessible.",
+                            value: 33
+                        }, {
+                            description: "Content and navigation accessible.",
+                            value: 67
+                        }, {
+                            description: "Fully accessible with correct document structure.",
+                            value: 100
+                        }],
+                    }, {
+                        id: 4,
+                        name: 'Appropriate use of Tables',
+                        url: 'tests/test5.html',
+                        webPage: 'http://www.web2access.org.uk/test/8/',
+                        rank: [{
+                            description: "Page layout is built using tables and access is poor",
+                            value: 0
+                        }, {
+                            description: "Data tables, if used, have no headings. Layout tables do not impact on screen reader.",
+                            value: 33
+                        }, {
+                            description: "Data tables incorrect layout. Navigation with a screen reader possible with effort.",
+                            value: 67
+                        }, {
+                            description: "Page layout does not use tables and/or headered tables are used to present data.",
+                            value: 100
+                        }],
+                    }];
+
+    // Default Value for test, to start from 1
+    $scope.test = $scope.tests[0];
 });
 
             
