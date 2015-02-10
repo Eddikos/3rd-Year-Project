@@ -1,6 +1,6 @@
             <ul>
                 <li ng-repeat="pageImage in pageImages">
-                    <div ng-mouseenter="highlightImage(pageImage.index, true)" ng-mouseleave="highlightImage(pageImage.index, false)">Image ALT: {{pageImage.alt}}, Image Index: {{pageImage.index}}</div>
+                    <div class="imageAltOnHover" ng-mouseenter="highlightImage(pageImage.index, true)" ng-mouseleave="highlightImage(pageImage.index, false)">Image ALT: {{pageImage.alt}}, Image Index: {{pageImage.index}}</div>
                 </li>                       
             </ul>
             <pre>{{pageImages}}</pre>

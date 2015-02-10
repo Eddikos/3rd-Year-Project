@@ -7,22 +7,51 @@ chrome.extension.onMessage.addListener(
 function (request, sender, sendResponse) {
 
     //debugger;
-        
+    
+
+    if(request.action){
+        $('.highlightItems').removeClass('highlightItems');
+    }
+    /*  
+        Test Number 1
+    */
+    if (request.action == 'PageForms') {
+        $('form').each(function(index) {
+            $(this).addClass("highlightItems");
+        });
+
+    }
+
+    /*  
+        Test Number 5
+    */
+    if (request.action == 'PageTables') {
+        $('table').each(function(index) {
+            $(this).addClass("highlightItems");
+        });
+    }
+
+
+
     // And it will listen specifically for this PageLinks action
     if (request.action == 'PageLinks') {
+        var badNames = ["click here", "click", "here", "share", "list", "read more", "read", "more"]
         var links = [];
         var numberOfLinks = 0;
 
         // Loop through all links found on the website
         $('a').each(function() {
+            $(this).addClass("highlightItems");
             numberOfLinks++;
 
             var pageLink = {};            
             var href = $(this).attr('href');
+            var text = $(this).text();
 
             if (href != null && href.indexOf("http") == 0) {
                 //only add links that start with http
                 pageLink.link = href;
+                pageLink.text = text;
                 // Create and Array of links basically :)
                 links.push(pageLink);
             }
@@ -43,6 +72,7 @@ function (request, sender, sendResponse) {
         
         // Loop through all images on the website
         $('img').each(function(index) {
+            $(this).addClass("highlightItems");
             numberOfImages++;
             
             var img = {};
@@ -86,7 +116,7 @@ function (request, sender, sendResponse) {
         "link" tags are used to include External or Internal CSS onto a webpage
         in the similar manner that "script" allows to include JavaScript files/code
     */
-    if (request.action == 'ToggleCSS') {
+    if (request.action == 'PageCSS') {
         if (request.disable){
             $('link[rel="stylesheet"]').attr('disabled', 'disabled');
         }

@@ -1,1 +1,1 @@
-﻿var myApp = angular.module('AngularChromeEx', []);
+﻿var myApp = angular.module('AngularChromeEx', ['ui.bootstrap']);

@@ -1,6 +1,6 @@
             <ul>
                 <li ng-repeat="pageLink in pageLinks">
-                    <a href="{{pageLink.link}}">{{pageLink.link}}</a>
+                    {{pageLink.text}} - <a href="{{pageLink.link}}">{{pageLink.link}}</a>
                 </li>                       
             </ul>
             <pre>{{pageLinks}}</pre>

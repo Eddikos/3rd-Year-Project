@@ -1,25 +1,19 @@
 ﻿myApp.controller("PageController", function ($scope) {
-    // Will be passed to the PageController which is in the POPUP.html
-    $scope.message = "This is a demo extension for Web2Access Accessibility tool";     
+    // Stores data submitted by user on all tests
+    $scope.testResults = [];  
 
     // Buttons for Previous/Next test
     $scope.back = function() {
         $scope.test = $scope.tests[$scope.test.id-1];
+        $scope.selected = false;
     }
     $scope.forward = function() {
         $scope.test = $scope.tests[$scope.test.id+1];
+        $scope.selected = false;
     }
 
 
-    // Watch the test's id changing and use the functions accordingly
-    $scope.$watch('test.id', function(newVal, oldVal, scope) {
-        if (newVal == 1){
-            $scope.requestImages();
-        }
-        if (newVal == 2){
-            $scope.requestLinks();
-        }
-    });
+
 
 
 
@@ -30,8 +24,31 @@
         {
             // Grab the title and URL of the page you are currently on
             $scope.title = tabs[0].title;
+            $scope.parser = document.createElement('a');
             $scope.url = tabs[0].url;
-            
+            $scope.parser.href = $scope.url
+
+
+            // Watch the test's id changing and use the functions accordingly
+            $scope.$watch('test.id', function(newVal, oldVal, scope) {
+                if (newVal == 0){
+                    $scope.requestForms();
+                }
+                if (newVal == 1){
+                    $scope.requestImages();
+                }
+                if (newVal == 2){
+                    $scope.requestLinks();
+                }
+                if (newVal == 4){
+                    $scope.requestTables();
+                }
+            });
+    
+            $scope.requestForms = function() {
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageForms' }, function (response) { });
+            };
+
             // Send messages to the main web page (CONTENTS.js), which has Listen function, and get the response asnwer
             $scope.requestImages = function(){
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageImages' }, function (response) {
@@ -47,15 +64,27 @@
                 });
             };
 
+            $scope.toggleCSS = function(disable) {
+                $scope.disabled = disable;
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageCSS', 'disable': disable }, function (response) { });
+            };
+
+
+            $scope.requestTables = function() {
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageTables' }, function (response) { });
+            };
+
             //Highlight the images in MAIN.html page hovered in the POPUP.html, plus pass varaible (whether onMouseEnter or onMouseLeave)
             $scope.highlightImage = function(imageIndex, approved) {
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'HighlightImage', 'imageIndex': imageIndex, 'approved': approved }, function (response) { });
             };
 
-            $scope.toggleCSS = function(disable) {
-                $scope.disabled = disable;
-                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'ToggleCSS', 'disable': disable }, function (response) { });
+
+            // ????????????????????????????????????????????
+            $scope.selected = function(){
+                $scope.selected = true;
             };
+            // ????????????????????????????????????????????
         }
     });
 

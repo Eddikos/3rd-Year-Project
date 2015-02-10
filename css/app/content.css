@@ -7,9 +7,10 @@
 /*a {
    	border: solid green 2px !important;
 }*/
-img{
+.highlightItems{
 	border: solid red 2px !important;
 }
 .close{
 	border: solid black 2px !important
 }
+
