@@ -13,10 +13,6 @@
     }
 
 
-
-
-
-
     // Find active tabs, i.e. tab you are browsing
     chrome.tabs.query({'active': true},
     function (tabs) {
@@ -24,6 +20,7 @@
         {
             // Grab the title and URL of the page you are currently on
             $scope.title = tabs[0].title;
+            // Tab's URL, retrieved long way to get the Hostname, port, etc. on request
             $scope.parser = document.createElement('a');
             $scope.url = tabs[0].url;
             $scope.parser.href = $scope.url
@@ -31,6 +28,9 @@
 
             // Watch the test's id changing and use the functions accordingly
             $scope.$watch('test.id', function(newVal, oldVal, scope) {
+                // Change of the Test ID means that a test was switched, then it is better to clean 
+                $scope.cleanPreviousCSS();
+
                 if (newVal == 0){
                     $scope.requestForms();
                 }
@@ -44,12 +44,18 @@
                     $scope.requestTables();
                 }
             });
-    
+        
+            // Send blank request to the page to trigger function to clean the CSS from previous test
+            $scope.cleanPreviousCSS = function() {
+                chrome.tabs.sendMessage(tabs[0].id, {}, function() {});
+            };
+
+            // Test 1, highlight Forms
             $scope.requestForms = function() {
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageForms' }, function (response) { });
             };
 
-            // Send messages to the main web page (CONTENTS.js), which has Listen function, and get the response asnwer
+            // Test 2, Send messages to the main web page (CONTENTS.js), which has Listen function, and get the response asnwer
             $scope.requestImages = function(){
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageImages' }, function (response) {
                     $scope.pageImages = response;
@@ -57,6 +63,7 @@
                 });
             };
 
+            // Test 3,
             $scope.requestLinks = function(){
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageLinks' }, function (response) {
                     $scope.pageLinks = response;
@@ -64,12 +71,13 @@
                 });
             };
 
+            // Test 4,
             $scope.toggleCSS = function(disable) {
                 $scope.disabled = disable;
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageCSS', 'disable': disable }, function (response) { });
             };
 
-
+            // Test 5,
             $scope.requestTables = function() {
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageTables' }, function (response) { });
             };
@@ -79,12 +87,13 @@
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'HighlightImage', 'imageIndex': imageIndex, 'approved': approved }, function (response) { });
             };
 
-
-            // ????????????????????????????????????????????
-            $scope.selected = function(){
-                $scope.selected = true;
+            $scope.reset = function(testID) {
+                if(testID){
+                    $scope.testResults[testID] = null;
+                } else if (!testID){
+                    $scope.testResults = [];
+                }
             };
-            // ????????????????????????????????????????????
         }
     });
 
@@ -181,7 +190,7 @@
                         }],
                     }];
 
-    // Default Value for test, to start from 1
+    // Default Value for test, to start from Test 1
     $scope.test = $scope.tests[0];
 });
 

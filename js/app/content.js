@@ -9,7 +9,7 @@ function (request, sender, sendResponse) {
     //debugger;
     
 
-    if(request.action){
+    if(request){
         $('.highlightItems').removeClass('highlightItems');
     }
     /*  
