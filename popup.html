@@ -16,22 +16,22 @@
     </head>
     <body id="popup">
         <header>
-            <h2 class="text-center">AngularJS + Chrome Extension</h2>
+            <h3 class="text-center">Web2Access Review Tool</h3>
         </header>
 
         <div ng-controller="PageController">
             <p class="text-center">{{message}}</p>
-            <p class="text-center"><b>Page Title</b>: {{title}}</p>
+            <!-- <p class="text-center"><b>Page Title</b>: {{title}}</p> -->
             <p class="text-center"><b>Page URL</b>: <a href="{{parser.host}}">{{parser.host}}</a></p>
 
-            <ul>
+            <!-- <ul>
                 <li>href = {{parser.href}}</li>
                 <li>protocol = {{parser.protocol}}</li>
                 <li>host = {{parser.host}}</li>
                 <li>hostname = {{parser.hostname}}</li>
                 <li>port = {{parser.port}}</li>
                 <li>pathname = {{parser.pathname}}</li>
-            </ul>
+            </ul> -->
             <hr/>
 
             <h3 class="text-center">Test {{test.id + 1}}: <a href="{{test.webPage}}" target="_blank" tooltip="Click for more information on {{test.name}}"><u>{{test.name}}</u></a></h3>
@@ -92,10 +92,10 @@
 
             <pre>{{testResults | json}}</pre>
 
-            <ng-form name="exampleForm">
-     <textarea type="text" ng-model="commentBox.text" ng-required="true"></textarea>
-     <button ng-disabled="exampleForm.$invalid" ng-click="onsubmit()">asdfasdf</button>
-   </ng-form>
+            <!-- <ng-form name="exampleForm">
+                <textarea type="text" ng-model="commentBox.text" ng-required="true"></textarea>
+                <button ng-disabled="exampleForm.$invalid" ng-click="onsubmit()">asdfasdf</button>
+            </ng-form> -->
 
             <div class="slide-animate-container">
                 <div class="slide-animate" ng-include="test.url"></div>

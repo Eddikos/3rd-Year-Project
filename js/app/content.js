@@ -22,47 +22,10 @@ function (request, sender, sendResponse) {
 
     }
 
+
     /*  
-        Test Number 5
+        Test Number 2
     */
-    if (request.action == 'PageTables') {
-        $('table').each(function(index) {
-            $(this).addClass("highlightItems");
-        });
-    }
-
-
-
-    // And it will listen specifically for this PageLinks action
-    if (request.action == 'PageLinks') {
-        var badNames = ["click here", "click", "here", "share", "list", "read more", "read", "more"]
-        var links = [];
-        var numberOfLinks = 0;
-
-        // Loop through all links found on the website
-        $('a').each(function() {
-            $(this).addClass("highlightItems");
-            numberOfLinks++;
-
-            var pageLink = {};            
-            var href = $(this).attr('href');
-            var text = $(this).text();
-
-            if (href != null && href.indexOf("http") == 0) {
-                //only add links that start with http
-                pageLink.link = href;
-                pageLink.text = text;
-                // Create and Array of links basically :)
-                links.push(pageLink);
-            }
-        });
-        
-        // Send response Back to POPUP.js
-        sendResponse(links);
-    }
-
-
-
     if (request.action == 'PageImages') {
         var imgs = [];
         var numberOfImages = 0;
@@ -98,18 +61,37 @@ function (request, sender, sendResponse) {
     }
 
 
-    // Request that may come from the Doogle Extension in order to highlight Hovered image
-    if (request.action == 'HighlightImage') {
-        if (request.approved){
-            $('.blue' + request.imageIndex).addClass('black');
-        }
-        if (!request.approved){
-            $('.black').removeClass('black');
-        }
+    /*  
+        Test Number 3
+    */
+    if (request.action == 'PageLinks') {
+        var badNames = ["click here", "click", "here", "share", "list", "read more", "read", "more"]
+        var links = [];
+        var numberOfLinks = 0;
+
+        // Loop through all links found on the website
+        $('a').each(function() {
+            $(this).addClass("highlightItems");
+            numberOfLinks++;
+
+            var pageLink = {};            
+            var href = $(this).attr('href');
+            var text = $(this).text();
+
+            if (href != null && href.indexOf("http") == 0) {
+                //only add links that start with http
+                pageLink.link = href;
+                pageLink.text = text;
+                // Create and Array of links basically :)
+                links.push(pageLink);
+            }
+        });
+        
+        // Send response Back to POPUP.js
+        sendResponse(links);
     }
 
-
-
+    
     /*  
         Test Number 4
         performed by simply Disabling/Enabling all "LINK" tags from the webpageusing jQuery.
@@ -124,6 +106,30 @@ function (request, sender, sendResponse) {
             $('link[rel="stylesheet"]').removeAttr('disabled');
         }
     }
+
+
+    /*  
+        Test Number 5
+    */
+    if (request.action == 'PageTables') {
+        $('table').each(function(index) {
+            $(this).addClass("highlightItems");
+        });
+    }
+
+    // Request that may come from the Doogle Extension in order to highlight Hovered image
+    if (request.action == 'HighlightImage') {
+        if (request.approved){
+            $('.blue' + request.imageIndex).addClass('black');
+        }
+        if (!request.approved){
+            $('.black').removeClass('black');
+        }
+    }
+
+
+
+    
 });
 
 
