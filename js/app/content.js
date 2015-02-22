@@ -110,15 +110,18 @@ function (request, sender, sendResponse) {
             // Store Image's Alt text and it's index (number) on the page
             img.alt = alt;
             img.index = index;
+            img.passed = true;
 
             if (alt != null) {
                 numberOfImagesWithAlt++;
-                
 
                 if (alt.trim() == ""){
                     numberOfImagesWithEmptyAlt++;
                     img.alt = " ";
+                    img.passed = false;
                 }
+            } else {
+                img.passed = false;
             }
 
             
@@ -140,30 +143,90 @@ function (request, sender, sendResponse) {
         Test Number 3
     */
     if (request.action == 'PageLinks') {
-        var badNames = ["click here", "click", "here", "share", "list", "read more", "read", "more"]
+        var badNames = ["click here!", "click here", "click", "here", "share", "list", "read more", "read", "more", "download", "click for details", "info"]
+        var brokenLinks = [401, 403, 404, 410, 500, 12002, 12007, 12029, 12031];
+        var linkData = {};
         var links = [];
         var numberOfLinks = 0;
+        var numberOfBadLinks = 0;
+        var numberOfDuplicatedLinks = 0;
 
-        // Loop through all links found on the website
-        $('a').each(function() {
+        // Loop through all links found on the website, and get the Index of the Link 
+        $('a').each(function(index) {
             $(this).addClass("highlightItems");
             numberOfLinks++;
 
             var pageLink = {};            
             var href = $(this).attr('href');
             var text = $(this).text();
-
-            if (href != null && href.indexOf("http") == 0) {
-                //only add links that start with http
-                pageLink.link = href;
-                pageLink.text = text;
-                // Create and Array of links basically :)
-                links.push(pageLink);
+            pageLink.index = index;
+            pageLink.link = href;
+            pageLink.text = text;
+            pageLink.passed = true;
+            
+            if (href != null) {
+                // Links with empty HREFs are mostly used to activate a JavaScript function
+                if (href.trim() == "" || href.trim() == "#") {
+                    numberOfBadLinks++;
+                    pageLink.passed = false;
+                    pageLink.reason = "Link Contains an empty HREF attribute";
+                }
+            } else {
+                numberOfBadLinks++;
+                pageLink.passed = false;
+                pageLink.reason = "Link Doesn't contain an HREF attribute";
             }
+            if (text == null || (text != null && text.trim() == "")){
+                numberOfBadLinks++;
+                pageLink.passed = false;
+                pageLink.reason = "Link Doesn't contain Text";
+            } else {
+                for (var i = 0; i < badNames.length; i++){
+                    if (text.toLowerCase().trim() == badNames[i].trim()){
+                        numberOfBadLinks++;
+                        pageLink.passed = false;
+                        pageLink.reason = "Ambiguous link name is provided";
+                    }
+                }
+            }
+
+            // Find broken Links through sending an HTTP request and getting status of the page
+            var http = new XMLHttpRequest();
+            http.open('HEAD', href, false);
+            http.send();
+            pageLink.status = http.status;
+            
+            // And then compare that status against the ones mentioned in the Broken Links array
+            for (var i = 0; i < brokenLinks.length; i++){
+                if (pageLink.status == brokenLinks[i]) {
+                    numberOfBadLinks++;
+                    pageLink.passed = false;
+                    pageLink.reason = '"' + http.status + ": " + http.statusText + '"';
+                }    
+            }
+
+            // HOWEVER, DELETE THE SECOND IF CHECK IF YOU WANT TO HAVE MULTIPLE MISTAKES BEING MENTIONED IN THE STATISTICS
+            if (links.length > 0 && pageLink.passed == true){
+                links.forEach(function(link) {
+                    if(text.toLowerCase().trim() == link.text.toLowerCase().trim()){
+                        numberOfDuplicatedLinks++;
+                        pageLink.passed = "warning";
+                        link.passed = "warning";
+                        pageLink.reason = "Duplicated Link Name";
+                    }
+                });
+            }
+
+
+            links.push(pageLink);
         });
         
+        linkData.links = links;
+        linkData.numberOfDuplicatedLinks = numberOfDuplicatedLinks;
+        linkData.numberOfLinks = numberOfLinks;
+        linkData.numberOfBadLinks = numberOfBadLinks;
         // Send response Back to POPUP.js
-        sendResponse(links);
+        sendResponse(linkData);
     }
 
     

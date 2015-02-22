@@ -1,7 +1,7 @@
 ﻿myApp.controller("PageController", function ($scope) {
     // Stores data submitted by user on all tests
     $scope.testResults = [];  
-    // Variable button to toogle Test examples 
+    // A Variable for a Button to toggle (Show/Hide) Test examples 
     $scope.testsExamples = true;
 
     // Buttons for Previous/Next test

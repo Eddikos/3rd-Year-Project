@@ -1,8 +1,27 @@
             <p class="text-center">There are <b>{{pageLinks.numberOfLinks}}</b> links, <b>{{pageLinks.numberOfBadLinks}}</b> of which are Bad</p>
 
-            <ul>
-                <li ng-repeat="pageLink in pageLinks.links">
-                    {{pageLink.text}} - <a href="{{pageLink.link}}">{{pageLink.link}}</a>
-                </li>                       
-            </ul>
+
+           	<button class="btn btn-default" ng-click="testsExamples = !testsExamples">
+				<span ng-if="testsExamples">Show Examples <span class="glyphicon glyphicon-chevron-down"></span></span>
+				<span ng-if="!testsExamples">Hide Examples <span class="glyphicon glyphicon-chevron-up"></span></span>
+			</button><hr/>
+
+
+			<div collapse="testsExamples" class="well">
+				<ul>
+	                <li ng-repeat="pageLink in pageLinks.links">
+	               		<span ng-if="!pageLink.passed" class="label label-danger">Link No. {{pageLink.index + 1}}:</span>
+	               		<span ng-if="pageLink.passed == true" class="label label-success">Link No. {{pageLink.index + 1}}:</span>
+	               		<span ng-if="pageLink.passed == 'warning'" class="label label-warning">Link No. {{pageLink.index + 1}}:</span>
+	                    <ul>
+			                <li>Link Text: {{pageLink.text}} <span ng-if="!pageLink.text" class="nullAlt"><b>null</b></span></li>
+			                <li>Passed: <b class="nullAlt">{{pageLink.passed}}</b></li>
+			                <li>Status: {{pageLink.status}}</li>
+			                <li ng-if="pageLink.reason">Reason to Fail: {{pageLink.reason}}</li>
+			                <li>URL: <a href="{{pageLink.link}}">{{pageLink.link}}</a></li>         
+			            </ul>
+	                </li>                       
+	            </ul>
+			</div>
+ 
             <pre>{{pageLinks}}</pre>
