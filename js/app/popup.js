@@ -1,6 +1,8 @@
 ﻿myApp.controller("PageController", function ($scope) {
     // Stores data submitted by user on all tests
     $scope.testResults = [];  
+    // Variable button to toogle Test examples 
+    $scope.testsExamples = true;
 
     // Buttons for Previous/Next test
     $scope.back = function() {
@@ -52,7 +54,10 @@
 
             // Test 1, highlight Forms
             $scope.requestForms = function() {
-                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageForms' }, function (response) { });
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageForms' }, function (response) { 
+                    $scope.formData = response;
+                    $scope.$apply();
+                });
             };
 
             // Test 2, Send messages to the main web page (CONTENTS.js), which has Listen function, and get the response asnwer

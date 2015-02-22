@@ -1,6 +1,23 @@
-            <ul>
-                <li ng-repeat="pageImage in pageImages">
-                    <div class="imageAltOnHover" ng-mouseenter="highlightImage(pageImage.index, true)" ng-mouseleave="highlightImage(pageImage.index, false)">Image ALT: {{pageImage.alt}}, Image Index: {{pageImage.index}}</div>
-                </li>                       
-            </ul>
+            <p class="text-center">There are <b>{{pageImages.numberOfImages}}</b> images, <b>{{pageImages.numberOfImagesWithAlt}}</b> of which has ALT tags (<b>{{pageImages.numberOfImagesWithEmptyAlt}}</b> of them are empty)</p>
+
+
+            
+			<button class="btn btn-default" ng-click="testsExamples = !testsExamples">
+				<span ng-if="testsExamples">Show Examples <span class="glyphicon glyphicon-chevron-down"></span></span>
+				<span ng-if="!testsExamples">Hide Examples <span class="glyphicon glyphicon-chevron-up"></span></span>
+			</button><hr/>
+
+			<div collapse="testsExamples" class="well">
+				<ul>
+	                <li ng-repeat="pageImage in pageImages.imgs">
+	                    <div class="imageAltOnHover" ng-mouseenter="highlightImage(pageImage.index, true)" ng-mouseleave="highlightImage(pageImage.index, false)">
+	                    	Img No.: {{pageImage.index + 1}}. Img ALT: 
+	                		<span ng-if="!pageImage.alt" class="nullAlt"><b>null</b></span>
+	                		<span ng-if="pageImage.alt">"{{pageImage.alt}}"</span>
+	                    </div>
+	                </li>                       
+	            </ul>
+			</div>
+		
+
             <pre>{{pageImages}}</pre>

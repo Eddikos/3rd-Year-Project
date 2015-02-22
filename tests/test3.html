@@ -1,5 +1,7 @@
+            <p class="text-center">There are <b>{{pageLinks.numberOfLinks}}</b> links, <b>{{pageLinks.numberOfBadLinks}}</b> of which are Bad</p>
+
             <ul>
-                <li ng-repeat="pageLink in pageLinks">
+                <li ng-repeat="pageLink in pageLinks.links">
                     {{pageLink.text}} - <a href="{{pageLink.link}}">{{pageLink.link}}</a>
                 </li>                       
             </ul>

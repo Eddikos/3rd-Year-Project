@@ -10,16 +10,17 @@
   user-select: none;
   background-color: #fbf0e6;
 }
-
 .rankStars{
   margin: 5px;
   width: 60px;
 }
-
 textarea {
     resize: none;
 }
 .imageAltOnHover:hover{
   border: 1px solid black;
   cursor: pointer;
+}
+.nullAlt{
+  font-family: "Courier New", Courier, serif;
 }
