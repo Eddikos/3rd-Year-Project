@@ -143,7 +143,7 @@ function (request, sender, sendResponse) {
         Test Number 3
     */
     if (request.action == 'PageLinks') {
-        var badNames = ["click here!", "click here", "click", "here", "share", "list", "read more", "read", "more", "download", "click for details", "info"]
+        var badNames = ["click here!", "click here", "click", "here", "share", "list", "read more", "read", "more", "download", "click for details", "info", "link", "link to", "jump", "jump to", "visit", "watch now", "select"]
         var brokenLinks = [401, 403, 404, 410, 500, 12002, 12007, 12029, 12031];
         var linkData = {};
         var links = [];
@@ -205,6 +205,7 @@ function (request, sender, sendResponse) {
                 }    
             }
 
+            // Method to find duplicated Links
             // HOWEVER, DELETE THE SECOND IF CHECK IF YOU WANT TO HAVE MULTIPLE MISTAKES BEING MENTIONED IN THE STATISTICS
             if (links.length > 0 && pageLink.passed == true){
                 links.forEach(function(link) {
@@ -215,6 +216,20 @@ function (request, sender, sendResponse) {
                         pageLink.reason = "Duplicated Link Name";
                     }
                 });
+            }
+
+
+            // Find Links that are presented in URL forms, taken from http://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
+            var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+                    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+                    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+                    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+                    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+                    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+            
+            if(pattern.test(text)) {
+                pageLink.passed = "warning";
+                pageLink.reason = "Text is Written as a URL, check for meaning";
             }
 
 
