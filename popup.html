@@ -84,8 +84,8 @@
                     <textarea name='summary' class="form-control" rows='4' id='testSummary' ng-model="testResults[test.id].checkSummary" ng-required="true" required></textarea>
                 </p>
                 
-                <div class="text-center">
-                    <button type="submit" class="btn btn-lg btn-success" ng-if=" test.id > 3 ">Submit <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
+                <div class="text-center" ng-if=" test.id > 3 ">
+                    <button type="submit" class="btn btn-lg btn-success">Submit <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button><br/>
                 </div>
             </form>
 

@@ -24,3 +24,6 @@ textarea {
 .nullAlt{
   font-family: "Courier New", Courier, serif;
 }
+.legend{
+  margin-left: 2em !important;
+}

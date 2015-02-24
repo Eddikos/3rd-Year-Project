@@ -10,6 +10,9 @@ function (request, sender, sendResponse) {
 
     if(request){
         $('.highlightItems').removeClass('highlightItems');
+        $('.testDanger').removeClass('testDanger');
+        $('.testSuccess').removeClass('testSuccess');
+        $('.testWarning').removeClass('testWarning');
     }
 
 
@@ -40,6 +43,7 @@ function (request, sender, sendResponse) {
                 
                 if (alt == null || (alt != null && alt.trim() == "")) {
                     notLabeledFields++;
+                    $(this).addClass("testDanger");
                 }
 
             // Check whether the buttons have been provided with VALUES
@@ -48,9 +52,11 @@ function (request, sender, sendResponse) {
                 
                 if (value == null || (value != null && value.trim() == "")) {
                     notLabeledFields++;
+                    $(this).addClass("testDanger");
                 }
 
             // Check all other Input fields, such as Radio, Text, Checkbox; for LABELS
+            // Solution taken from http://stackoverflow.com/questions/4844594/jquery-select-the-associated-label-element-of-a-input-field 
             } else {
                 // Some Labels wil have FOR set...
                 var label = $('label[for="'+$(this).attr('id')+'"]');
@@ -66,6 +72,12 @@ function (request, sender, sendResponse) {
                 }
                 if(label.length <=0){
                     notLabeledFields++;
+                    $(this).addClass("testDanger");
+
+                    // Radio and CheckBox are treated separately because Their CSS can't be adjusted easily
+                    if (type == "radio" || type == "checkbox"){
+                        $(this).wrap( "<span class='testDanger'></span>" );
+                    }
                 }
             }
         });
@@ -75,6 +87,7 @@ function (request, sender, sendResponse) {
 
             if (text == null || (text != null && text.trim() == "")) {
                 notLabeledFields++;
+                $(this).addClass("testDanger");
             }
         });
 
@@ -99,7 +112,6 @@ function (request, sender, sendResponse) {
         
         // Loop through all images on the website
         $('img').each(function(index) {
-            $(this).addClass("highlightItems");
             numberOfImages++;
             
             var img = {};
@@ -119,12 +131,16 @@ function (request, sender, sendResponse) {
                     numberOfImagesWithEmptyAlt++;
                     img.alt = " ";
                     img.passed = false;
+                    $(this).addClass("testDanger");
                 }
             } else {
                 img.passed = false;
+                $(this).addClass("testDanger");
             }
 
-            
+            if (img.passed){
+                $(this).addClass("testSuccess");
+            }
             // Create and Array of URLs basically :)
             imgs.push(img);
         });
@@ -153,9 +169,10 @@ function (request, sender, sendResponse) {
 
         // Loop through all links found on the website, and get the Index of the Link 
         $('a').each(function(index) {
-            $(this).addClass("highlightItems");
+            $(this).addClass("testSuccess");
             numberOfLinks++;
 
+            var currentLink = $(this);
             var pageLink = {};            
             var href = $(this).attr('href');
             var text = $(this).text();
@@ -170,27 +187,32 @@ function (request, sender, sendResponse) {
                     numberOfBadLinks++;
                     pageLink.passed = false;
                     pageLink.reason = "Link Contains an empty HREF attribute";
+                    $(this).addClass("testDanger");
                 }
             } else {
                 numberOfBadLinks++;
                 pageLink.passed = false;
                 pageLink.reason = "Link Doesn't contain an HREF attribute";
+                $(this).addClass("testDanger");
             }
             if (text == null || (text != null && text.trim() == "")){
                 numberOfBadLinks++;
                 pageLink.passed = false;
                 pageLink.reason = "Link Doesn't contain Text";
+                $(this).addClass("testDanger");
             } else {
                 for (var i = 0; i < badNames.length; i++){
                     if (text.toLowerCase().trim() == badNames[i].trim()){
                         numberOfBadLinks++;
                         pageLink.passed = false;
                         pageLink.reason = "Ambiguous link name is provided";
+                        $(this).addClass("testDanger");
                     }
                 }
             }
 
             // Find broken Links through sending an HTTP request and getting status of the page
+            // Solution taken from http://stackoverflow.com/questions/1591401/javascript-jquery-check-broken-links
             var http = new XMLHttpRequest();
             http.open('HEAD', href, false);
             http.send();
@@ -202,6 +224,7 @@ function (request, sender, sendResponse) {
                     numberOfBadLinks++;
                     pageLink.passed = false;
                     pageLink.reason = '"' + http.status + ": " + http.statusText + '"';
+                    $(this).addClass("testDanger");
                 }    
             }
 
@@ -212,8 +235,9 @@ function (request, sender, sendResponse) {
                     if(text.toLowerCase().trim() == link.text.toLowerCase().trim()){
                         numberOfDuplicatedLinks++;
                         pageLink.passed = "warning";
-                        link.passed = "warning";
+                        //link.passed = "warning";
                         pageLink.reason = "Duplicated Link Name";
+                        currentLink.addClass("testWarning");
                     }
                 });
             }
@@ -230,8 +254,8 @@ function (request, sender, sendResponse) {
             if(pattern.test(text)) {
                 pageLink.passed = "warning";
                 pageLink.reason = "Text is Written as a URL, check for meaning";
+                $(this).addClass("testWarning");
             }
-
 
             links.push(pageLink);
         });

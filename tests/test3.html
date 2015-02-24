@@ -8,6 +8,10 @@
 
 
 			<div collapse="testsExamples" class="well">
+				<div class="text-center"><b>Legend:</b> <span class="label label-danger legend">FAILED</span>
+	               		<span class="label label-success legend">PASSED</span>
+	               		<span class="label label-warning legend">WARNING</span>
+	            </div><br/>
 				<ul>
 	                <li ng-repeat="pageLink in pageLinks.links">
 	               		<span ng-if="!pageLink.passed" class="label label-danger">Link No. {{pageLink.index + 1}}:</span>

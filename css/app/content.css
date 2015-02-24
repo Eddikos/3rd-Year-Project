@@ -10,4 +10,16 @@
 .close{
 	border: solid black 2px !important
 }
+.testSuccess{
+  border: 2px solid rgba(0, 153, 19, 1) !important;
+  border-radius: 2px !important;
+}
+.testWarning{
+  border: 2px solid rgba(255, 107, 9, 1) !important;
+  border-radius: 2px !important;
+}
+.testDanger{
+  border: 2px solid rgba(255, 9, 9, 1) !important;
+  border-radius: 2px !important;
+}
 
