@@ -1,14 +1,5 @@
-.black{
-	border: solid black 3px !important;
-}
-.blue{
-	border: solid blue 3px !important;
-}
 .highlightItems{
 	border: solid red 2px !important;
-}
-.close{
-	border: solid black 2px !important
 }
 .testSuccess{
   border: 2px solid rgba(0, 153, 19, 1) !important;
@@ -22,4 +13,6 @@
   border: 2px solid rgba(255, 9, 9, 1) !important;
   border-radius: 2px !important;
 }
-
+.black{
+	border: solid black 3px !important;
+}

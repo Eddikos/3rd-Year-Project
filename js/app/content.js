@@ -6,25 +6,27 @@
 chrome.extension.onMessage.addListener(
 function (request, sender, sendResponse) {
 
-    //debugger;
-
-    if(request){
+    if(request && request.action != 'HighlightImage'){
         $('.highlightItems').removeClass('highlightItems');
         $('.testDanger').removeClass('testDanger');
         $('.testSuccess').removeClass('testSuccess');
         $('.testWarning').removeClass('testWarning');
+        $('*[class*="blue"]').removeClass (function (index, css) {
+            return (css.match (/(^|\s)blue\S+/g) || []).join(' ');
+});
     }
-
 
     /*  
         Test Number 1
     */
     if (request.action == 'PageForms') {
         var formData = {};
+        var formElements = [];
         var numberOfForms = 0;
-        var numberOfInputFields = 0;
+        var numberOfFormElements = 0;
         var notLabeledFields = 0;
-
+        var i = 0
+        
         // Count and Highlight all existing forms
         $('form').each(function(index) {
             numberOfForms++;
@@ -33,17 +35,23 @@ function (request, sender, sendResponse) {
 
         // Check for labels on most common inputs fields: text, radio, checkbox, textarea, etc.
         $("input[type!='hidden'], textarea, select").each(function(index) {
-            numberOfInputFields++;
-
+            i = index;
+            numberOfFormElements++;
+            var formElement = {}
             var type = $(this).attr('type');
+            var currentFormElement = $(this);
+
+            formElement.passed = true;
+            formElement.index = index;
+            
+            $(this).addClass("blue"+ index);
 
             // Check whether Input field of IMAGE type, has an ALT attribute
             if (type == "image"){
                 var alt = $(this).attr('alt');
                 
                 if (alt == null || (alt != null && alt.trim() == "")) {
-                    notLabeledFields++;
-                    $(this).addClass("testDanger");
+                    testFailed(formElement, currentFormElement, "No ALT tag on Input of Image Type");
                 }
 
             // Check whether the buttons have been provided with VALUES
@@ -51,15 +59,14 @@ function (request, sender, sendResponse) {
                 var value = $(this).attr('value');
                 
                 if (value == null || (value != null && value.trim() == "")) {
-                    notLabeledFields++;
-                    $(this).addClass("testDanger");
+                    testFailed(formElement, currentFormElement, "No Value provided for Button");
                 }
 
             // Check all other Input fields, such as Radio, Text, Checkbox; for LABELS
             // Solution taken from http://stackoverflow.com/questions/4844594/jquery-select-the-associated-label-element-of-a-input-field 
             } else {
                 // Some Labels wil have FOR set...
-                var label = $('label[for="'+$(this).attr('id')+'"]');
+                var label = $('label[for="' + $(this).attr('id') + '"]');
 
                 // However, some labels will be the PARENT of the associated input field
                 if(label.length <= 0) {
@@ -71,8 +78,7 @@ function (request, sender, sendResponse) {
                     }
                 }
                 if(label.length <=0){
-                    notLabeledFields++;
-                    $(this).addClass("testDanger");
+                    testFailed(formElement, currentFormElement, "An Input Field is not Labeled");
 
                     // Radio and CheckBox are treated separately because Their CSS can't be adjusted easily
                     if (type == "radio" || type == "checkbox"){
@@ -80,21 +86,40 @@ function (request, sender, sendResponse) {
                     }
                 }
             }
+
+            formElements.push(formElement);
         });
 
         $('button').each(function(index) {
+            numberOfFormElements++;
             var text = $(this).text();
+            var formElement = {}
+
+            formElement.passed = true;
+            formElement.index = i + index + 1;
+
+            $(this).addClass("blue"+ formElement.index);
 
             if (text == null || (text != null && text.trim() == "")) {
-                notLabeledFields++;
-                $(this).addClass("testDanger");
+                testFailed(formElement, $(this), "Button Doesn't contain text");
             }
+
+            formElements.push(formElement);
         });
 
+        function testFailed(formElement, currentFormElement, failureMessage){
+            notLabeledFields++;
+            formElement.passed = false;
+            currentFormElement.addClass("testDanger");
+            formElement.reason = failureMessage;
+        }
+
+        formData.formElements = formElements;
         formData.numberOfForms = numberOfForms;
-        formData.numberOfInputFields = numberOfInputFields;
+        formData.numberOfFormElements = numberOfFormElements;
         formData.notLabeledFields = notLabeledFields;
 
+        // Send response back to POPUP.js
         sendResponse(formData);
     }
 
@@ -132,10 +157,12 @@ function (request, sender, sendResponse) {
                     img.alt = " ";
                     img.passed = false;
                     $(this).addClass("testDanger");
+                    img.reason = "An empty ALT text is being provided";
                 }
             } else {
                 img.passed = false;
                 $(this).addClass("testDanger");
+                img.reason = "No ALT text has been provided";
             }
 
             if (img.passed){
@@ -149,7 +176,6 @@ function (request, sender, sendResponse) {
         imgData.numberOfImages = numberOfImages;
         imgData.numberOfImagesWithAlt = numberOfImagesWithAlt;
         imgData.numberOfImagesWithEmptyAlt = numberOfImagesWithEmptyAlt;
-
         // Send response Back to POPUP.js
         sendResponse(imgData);
     }
@@ -172,6 +198,8 @@ function (request, sender, sendResponse) {
             $(this).addClass("testSuccess");
             numberOfLinks++;
 
+            $(this).addClass("blue"+ index);
+            
             var currentLink = $(this);
             var pageLink = {};            
             var href = $(this).attr('href');
@@ -184,29 +212,18 @@ function (request, sender, sendResponse) {
             if (href != null) {
                 // Links with empty HREFs are mostly used to activate a JavaScript function
                 if (href.trim() == "" || href.trim() == "#") {
-                    numberOfBadLinks++;
-                    pageLink.passed = false;
-                    pageLink.reason = "Link Contains an empty HREF attribute";
-                    $(this).addClass("testDanger");
+                    testFailed("Link Contains an empty HREF attribute");
                 }
             } else {
-                numberOfBadLinks++;
-                pageLink.passed = false;
-                pageLink.reason = "Link Doesn't contain an HREF attribute";
-                $(this).addClass("testDanger");
+                testFailed("Link Doesn't contain an HREF attribute");
             }
             if (text == null || (text != null && text.trim() == "")){
-                numberOfBadLinks++;
-                pageLink.passed = false;
-                pageLink.reason = "Link Doesn't contain Text";
-                $(this).addClass("testDanger");
+               testFailed("Link Doesn't contain Text");
+
             } else {
                 for (var i = 0; i < badNames.length; i++){
                     if (text.toLowerCase().trim() == badNames[i].trim()){
-                        numberOfBadLinks++;
-                        pageLink.passed = false;
-                        pageLink.reason = "Ambiguous link name is provided";
-                        $(this).addClass("testDanger");
+                        testFailed("Ambiguous link name is provided");
                     }
                 }
             }
@@ -221,10 +238,7 @@ function (request, sender, sendResponse) {
             // And then compare that status against the ones mentioned in the Broken Links array
             for (var i = 0; i < brokenLinks.length; i++){
                 if (pageLink.status == brokenLinks[i]) {
-                    numberOfBadLinks++;
-                    pageLink.passed = false;
-                    pageLink.reason = '"' + http.status + ": " + http.statusText + '"';
-                    $(this).addClass("testDanger");
+                    testFailed('"' + http.status + ": " + http.statusText + '"');
                 }    
             }
 
@@ -245,16 +259,23 @@ function (request, sender, sendResponse) {
 
             // Find Links that are presented in URL forms, taken from http://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
             var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
-                    '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
-                    '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
-                    '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
-                    '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
-                    '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+                '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+                '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+                '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+                '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+                '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
             
             if(pattern.test(text)) {
                 pageLink.passed = "warning";
                 pageLink.reason = "Text is Written as a URL, check for meaning";
-                $(this).addClass("testWarning");
+                currentLink.addClass("testWarning");
+            }
+
+            function testFailed(failureMessage){
+                numberOfBadLinks++;
+                pageLink.passed = false;
+                pageLink.reason = failureMessage;
+                currentLink.addClass("testDanger");
             }
 
             links.push(pageLink);
@@ -304,12 +325,7 @@ function (request, sender, sendResponse) {
         }
     }
 
-
-
-    
 });
-
-
     // // Storing the data in Chrome.Storage.Sync
 
     // chrome.storage.sync.set({'value': imgCount}, function() {
