@@ -1,16 +1,4 @@
-            <p class="text-center">There are <b>{{pageImages.numberOfImages}}</b> images, <b>{{pageImages.numberOfImagesWithAlt}}</b> of which has ALT tags (<b>{{pageImages.numberOfImagesWithEmptyAlt}}</b> of them are empty)</p>
 
-			<button class="btn btn-primary" ng-click="testsExamples = !testsExamples">
-				<span ng-if="testsExamples">Show Examples <span class="glyphicon glyphicon-chevron-down"></span></span>
-				<span ng-if="!testsExamples">Hide Examples <span class="glyphicon glyphicon-chevron-up"></span></span>
-			</button><hr/>
-
-			<div collapse="testsExamples" class="well">
-				<div class="text-center"><b>Legend:</b> <span class="label label-danger legend">FAILED</span>
-	               		<span class="label label-success legend">PASSED</span>
-	               		<span class="label label-warning legend">WARNING</span>
-	            </div><br/>
-				<ul>
 	                <li ng-repeat="pageImage in pageImages.imgs">
 	                    <div class="imageAltOnHover" ng-mouseenter="highlightImage(pageImage.index, true)" ng-mouseleave="highlightImage(pageImage.index, false)">
 		                    <span ng-if="!pageImage.passed" class="label label-danger">Img No.: {{pageImage.index + 1}}:</span>
@@ -25,7 +13,4 @@
 			                <li ng-if="pageImage.reason">Reason to Fail: {{pageImage.reason}}</li>        
 			            </ul>
 	                </li>                       
-	            </ul>
-			</div>
-
-            <pre>{{pageImages}}</pre>
+	            

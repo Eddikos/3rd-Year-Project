@@ -21,7 +21,6 @@
 
         <div ng-controller="PageController">
             <p class="text-center">{{message}}</p>
-            <!-- <p class="text-center"><b>Page Title</b>: {{title}}</p> -->
             <p class="text-center"><b>Page URL</b>: <a href="{{parser.host}}">{{parser.host}}</a></p>
 
             <!-- <ul>
@@ -95,8 +94,39 @@
                 <button ng-disabled="exampleForm.$invalid" ng-click="onsubmit()">asdfasdf</button>
             </ng-form> -->
 
-            <div class="slide-animate-container">
-                <div class="slide-animate" ng-include="test.url"></div>
+            <div ng-if = "test.id == 3">
+                <div ng-include="test.url"></div>
+            </div>
+
+
+            <div ng-if = "test.id != 3">
+                <p ng-if=" test.id == 0 " class="text-center">There are <b>{{formData.numberOfForms}}</b> forms on the page and <b>{{formData.numberOfFormElements}}</b> input fields (<b>{{formData.notLabeledFields}}</b> of which is not labeled)</p>
+
+                <p ng-if=" test.id == 1 " class="text-center">There are <b>{{pageImages.numberOfImages}}</b> images, <b>{{pageImages.numberOfImagesWithAlt}}</b> of which has ALT tags (<b>{{pageImages.numberOfImagesWithEmptyAlt}}</b> of them are empty)</p>
+
+                <p ng-if=" test.id == 2 " class="text-center">There are <b>{{pageLinks.numberOfLinks}}</b> links, <b>{{pageLinks.numberOfBadLinks}}</b> of which are Bad</p>
+
+                <button class="btn btn-primary" ng-click="testsExamples = !testsExamples">
+                    <span ng-if="testsExamples">Show Examples <span class="glyphicon glyphicon-chevron-down"></span></span>
+                    <span ng-if="!testsExamples">Hide Examples <span class="glyphicon glyphicon-chevron-up"></span></span>
+                </button><hr/>
+
+                <div collapse="testsExamples" class="well">
+                    <div class="text-center"><b>Legend:</b> 
+                        <span class="label label-danger legend">FAILED</span>
+                        <span class="label label-success legend">PASSED</span>
+                        <span class="label label-warning legend">WARNING</span>
+                    </div><br/>
+                    <ul>
+
+                        <div ng-include="test.url"></div>
+
+                    </ul>
+                </div>
+
+                <pre>{{pageImages}}</pre>
+                <pre>{{formData}}</pre>
+                <pre>{{pageLinks}}</pre>
             </div>
 
             <pre> Test Results: {{testResults | json}}</pre>

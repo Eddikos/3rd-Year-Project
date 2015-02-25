@@ -1,17 +1,4 @@
-			<p class="text-center">There are <b>{{formData.numberOfForms}}</b> forms on the page and <b>{{formData.numberOfFormElements}}</b> input fields (<b>{{formData.notLabeledFields}}</b> of which is not labeled)</p>
-
-			<button class="btn btn-primary" ng-click="testsExamples = !testsExamples">
-				<span ng-if="testsExamples">Show Examples <span class="glyphicon glyphicon-chevron-down"></span></span>
-				<span ng-if="!testsExamples">Hide Examples <span class="glyphicon glyphicon-chevron-up"></span></span>
-			</button><hr/>
-
-			<div collapse="testsExamples" class="well">
-				<div class="text-center"><b>Legend:</b> 
-					<span class="label label-danger legend">FAILED</span>
-               		<span class="label label-success legend">PASSED</span>
-               		<span class="label label-warning legend">WARNING</span>
-	            </div><br/>
-				<ul>
+			
 	                <li ng-repeat="formElement in formData.formElements">
 	                	<div class="imageAltOnHover" ng-mouseenter="highlightImage(formElement.index, true)" ng-mouseleave="highlightImage(formElement.index, false)">
 		                    <span ng-if="!formElement.passed" class="label label-danger">Form Element No. {{formElement.index + 1}}:</span>
@@ -23,7 +10,5 @@
 			                <li ng-if="formElement.reason">Reason to Fail: {{formElement.reason}}</li>    
 			            </ul>
 	                </li>                       
-	            </ul>
-			</div>
 
-            <pre>{{formData}}</pre>
+            

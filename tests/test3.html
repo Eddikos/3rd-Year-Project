@@ -1,16 +1,4 @@
-            <p class="text-center">There are <b>{{pageLinks.numberOfLinks}}</b> links, <b>{{pageLinks.numberOfBadLinks}}</b> of which are Bad</p>
 
-           	<button class="btn btn-primary" ng-click="testsExamples = !testsExamples">
-				<span ng-if="testsExamples">Show Examples <span class="glyphicon glyphicon-chevron-down"></span></span>
-				<span ng-if="!testsExamples">Hide Examples <span class="glyphicon glyphicon-chevron-up"></span></span>
-			</button><hr/>
-
-			<div collapse="testsExamples" class="well">
-				<div class="text-center"><b>Legend:</b> <span class="label label-danger legend">FAILED</span>
-	               		<span class="label label-success legend">PASSED</span>
-	               		<span class="label label-warning legend">WARNING</span>
-	            </div><br/>
-				<ul>
 	                <li ng-repeat="pageLink in pageLinks.links">
 	                	<div class="imageAltOnHover" ng-mouseenter="highlightImage(pageLink.index, true)" ng-mouseleave="highlightImage(pageLink.index, false)">
 		               		<span ng-if="!pageLink.passed" class="label label-danger">Link No. {{pageLink.index + 1}}:</span>
@@ -24,8 +12,6 @@
 			                <li ng-if="pageLink.reason">Reason to Fail: {{pageLink.reason}}</li>
 			                <li>URL: <a href="{{pageLink.link}}">{{pageLink.link}}</a></li>         
 			            </ul>
-	                </li>                       
-	            </ul>
-			</div>
+	                </li>     
  
-            <pre>{{pageLinks}}</pre>
+            
