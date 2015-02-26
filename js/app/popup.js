@@ -84,7 +84,10 @@
 
             // Test 5,
             $scope.requestTables = function() {
-                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageTables' }, function (response) { });
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageTables' }, function (response) { 
+                    $scope.pageTables = response;
+                    $scope.$apply();
+                });
             };
 
             //Highlight the images in MAIN.html page hovered in the POPUP.html, plus pass varaible (whether onMouseEnter or onMouseLeave)

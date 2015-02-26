@@ -6,6 +6,9 @@
 chrome.extension.onMessage.addListener(
 function (request, sender, sendResponse) {
 
+    //debugger; 
+
+    // Remove all CSS classes for each test to start from scratch
     if(request && request.action != 'HighlightImage'){
         $('.highlightItems').removeClass('highlightItems');
         $('.testDanger').removeClass('testDanger');
@@ -13,7 +16,7 @@ function (request, sender, sendResponse) {
         $('.testWarning').removeClass('testWarning');
         $('*[class*="blue"]').removeClass (function (index, css) {
             return (css.match (/(^|\s)blue\S+/g) || []).join(' ');
-});
+        });
     }
 
     /*  
@@ -116,8 +119,8 @@ function (request, sender, sendResponse) {
 
         formData.formElements = formElements;
         formData.numberOfForms = numberOfForms;
-        formData.numberOfFormElements = numberOfFormElements;
         formData.notLabeledFields = notLabeledFields;
+        formData.numberOfFormElements = numberOfFormElements;
 
         // Send response back to POPUP.js
         sendResponse(formData);
@@ -133,7 +136,6 @@ function (request, sender, sendResponse) {
         var numberOfImages = 0;
         var numberOfImagesWithAlt = 0;
         var numberOfImagesWithEmptyAlt = 0
-        var imgCount = 0;
         
         // Loop through all images on the website
         $('img').each(function(index) {
@@ -195,11 +197,11 @@ function (request, sender, sendResponse) {
 
         // Loop through all links found on the website, and get the Index of the Link 
         $('a').each(function(index) {
-            $(this).addClass("testSuccess");
             numberOfLinks++;
 
+            $(this).addClass("testSuccess");
             $(this).addClass("blue"+ index);
-            
+
             var currentLink = $(this);
             var pageLink = {};            
             var href = $(this).attr('href');
@@ -256,7 +258,6 @@ function (request, sender, sendResponse) {
                 });
             }
 
-
             // Find Links that are presented in URL forms, taken from http://stackoverflow.com/questions/5717093/check-if-a-javascript-string-is-an-url
             var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
                 '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
@@ -282,9 +283,9 @@ function (request, sender, sendResponse) {
         });
         
         linkData.links = links;
-        linkData.numberOfDuplicatedLinks = numberOfDuplicatedLinks;
         linkData.numberOfLinks = numberOfLinks;
         linkData.numberOfBadLinks = numberOfBadLinks;
+        linkData.numberOfDuplicatedLinks = numberOfDuplicatedLinks;
         // Send response Back to POPUP.js
         sendResponse(linkData);
     }
@@ -310,9 +311,60 @@ function (request, sender, sendResponse) {
         Test Number 5
     */
     if (request.action == 'PageTables') {
+        var tableData = {};
+        var tables = [];
+        var numberOfTables = 0;
+        var numberOfDangerTables = 0;
+        var numberOfWarningTables = 0;
+
         $('table').each(function(index) {
-            $(this).addClass("highlightItems");
+            numberOfTables++;
+
+            $(this).addClass("highlightItems blue"+ index);
+
+            var pageTable = {};            
+
+            pageTable.passed = true;
+            pageTable.index = index;
+
+            var thead = $(this).children('thead');
+
+            if(thead.length <= 0) {
+                var th = $(this).find('tr th');
+
+                if (th.length){
+                    numberOfWarningTables++;
+                    pageTable.passed = "warning";
+                    pageTable.reason = "Head cell provided, <th>, but no <thead>"
+                    $(this).addClass("testWarning");
+                } else {
+                    numberOfDangerTables++;
+                    pageTable.passed = false;
+                    pageTable.reason = "No table header: <th> and <thead>"
+                    $(this).addClass("testDanger");
+                }
+            } else {
+                var th = $(this).find('th');
+
+                if (th.length){
+                    $(this).addClass("testSuccess");
+                } else {
+                    numberOfDangerTables++;
+                    pageTable.passed = false;
+                    pageTable.reason = "Header provided, <thead>, but no <th>";
+                    $(this).addClass("testDanger");
+                }
+            }
+            
+            tables.push(pageTable);
         });
+        
+        tableData.tables = tables;
+        tableData.numberOfTables = numberOfTables;
+        tableData.numberOfDangerTables = numberOfDangerTables;
+        tableData.numberOfWarningTables = numberOfWarningTables;
+        // Send response Back to POPUP.js
+        sendResponse(tableData);
     }
 
     // Request that may come from the Doogle Extension in order to highlight Hovered image
@@ -326,7 +378,7 @@ function (request, sender, sendResponse) {
     }
 
 });
-    // // Storing the data in Chrome.Storage.Sync
+    // Storing the data in Chrome.Storage.Sync
 
     // chrome.storage.sync.set({'value': imgCount}, function() {
     //     chrome.storage.sync.get("value", function(data) {

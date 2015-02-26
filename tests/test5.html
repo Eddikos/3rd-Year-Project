@@ -1,0 +1,12 @@
+					
+					<li ng-repeat="pageTable in pageTables.tables">
+	                	<div class="imageAltOnHover" ng-mouseenter="highlightImage(pageTable.index, true)" ng-mouseleave="highlightImage(pageTable.index, false)">
+		               		<span ng-if="!pageTable.passed" class="label label-danger">Table No. {{pageTable.index + 1}}:</span>
+		               		<span ng-if="pageTable.passed == true" class="label label-success">Table No. {{pageTable.index + 1}}:</span>
+		               		<span ng-if="pageTable.passed == 'warning'" class="label label-warning">Table No. {{pageTable.index + 1}}:</span>
+	                    </div>
+	                    <ul>
+			                <li>Passed: <b class="nullAlt">{{pageTable.passed}}</b></li>
+			                <li ng-if="pageTable.reason">Reason to Fail: {{pageTable.reason}}</li>     
+			            </ul>
+	                </li> 

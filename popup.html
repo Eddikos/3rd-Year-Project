@@ -106,6 +106,8 @@
 
                 <p ng-if=" test.id == 2 " class="text-center">There are <b>{{pageLinks.numberOfLinks}}</b> links, <b>{{pageLinks.numberOfBadLinks}}</b> of which are Bad</p>
 
+                <p ng-if=" test.id == 4 " class="text-center">There are <b>{{pageTables.numberOfTables}}</b> tables, <b>{{pageTables.numberOfDangerTables}}</b> of which are Bad</p>
+
                 <button class="btn btn-primary" ng-click="testsExamples = !testsExamples">
                     <span ng-if="testsExamples">Show Examples <span class="glyphicon glyphicon-chevron-down"></span></span>
                     <span ng-if="!testsExamples">Hide Examples <span class="glyphicon glyphicon-chevron-up"></span></span>
@@ -127,6 +129,7 @@
                 <pre>{{pageImages}}</pre>
                 <pre>{{formData}}</pre>
                 <pre>{{pageLinks}}</pre>
+                <pre>{{pageTables}}</pre>
             </div>
 
             <pre> Test Results: {{testResults | json}}</pre>
