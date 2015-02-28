@@ -2,3 +2,22 @@
 				<button type="button" class="btn btn-lg btn-danger" ng-click="toggleCSS(true)" ng-if="!disabled">Disable CSS</button>
                 <button type="button" class="btn btn-lg btn-success" ng-click="toggleCSS(false)" ng-if="disabled">Enable CSS</button>
 			</div><br/>
+
+			<table>
+				<thead>
+					<tr>
+						<th></th>
+						<th>Score</th>
+						<th>Comments</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="testResult in testResults">
+						<td>Test n. </td>
+						<td ng-if="testResult.checkScore"><img class="rankStars img-circle" src='img/tick.png' alt='Tick, i.e. given' /></td>
+						<td ng-if="!testResult.checkScore"><img class="rankStars img-circle" src='img/cross.png' alt='Cross, i.e. not given'/></td>
+						<td ng-if="testResult.checkSummary"><img class="rankStars img-circle" src='img/tick.png' alt='Tick, i.e. given' /></td>
+						<td ng-if="!testResult.checkSummary"><img class="rankStars img-circle" src='img/cross.png' alt='Cross, i.e. not given'/></td>
+					</tr>
+				</tbody>
+			</table>
