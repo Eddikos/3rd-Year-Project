@@ -1,4 +1,6 @@
-﻿myApp.controller("PageController", function ($scope) {
+﻿var j = jQuery.noConflict();
+
+myApp.controller("PageController", function ($scope) {
     // Stores data submitted by user on all tests
     $scope.testResults = [];  
     // A Variable for a Button to toggle (Show/Hide) Test examples 
@@ -12,6 +14,28 @@
     $scope.forward = function() {
         $scope.test = $scope.tests[$scope.test.id+1];
         $scope.selected = false;
+    }
+
+    $scope.rate = 3;
+    $scope.max = 4;
+    $scope.isReadonly = false;
+    $scope.overStar = 1;
+
+    $scope.hoveringOver = function(value) {
+        $scope.overStar = value;
+        $scope.percent = 100 * (value / $scope.max);
+    };
+    $scope.selectStar = function(rate) {
+        $scope.overStar = rate;
+        if (rate == 1){
+            $scope.dude = 0;
+        } else if (rate == 2){
+            $scope.dude = 33;
+        } else if (rate == 3){
+            $scope.dude = 67;
+        } else if (rate == 4){
+            $scope.dude = 100;
+        }
     }
 
 
@@ -32,6 +56,14 @@
             $scope.$watch('test.id', function(newVal, oldVal, scope) {
                 // Change of the Test ID means that a test was switched, then it is better to clean 
                 $scope.cleanPreviousCSS();
+                $scope.testsExamples = true;
+
+                if($scope.testResults[newVal] && $scope.testResults[newVal].checkScore){
+                    $scope.rate = 1 + Math.floor($scope.testResults[newVal].checkScore / 33);
+                } else {
+                    $scope.rate = 0;
+                    $scope.overStar = 1;
+                }
 
                 if (newVal == 0){
                     $scope.requestForms();
@@ -45,6 +77,10 @@
                 if (newVal == 4){
                     $scope.requestTables();
                 }
+            });
+
+            $scope.$watch('testResults[test.id].checkScore', function(newVal, oldVal, scope) {
+                $scope.rate = 1 + Math.floor(newVal / 33);
             });
         
             // Send blank request to the page to trigger function to clean the CSS from previous test
@@ -112,16 +148,16 @@
                         url: 'tests/test1.html',
                         webPage: 'http://www.web2access.org.uk/test/1/',
                         rank: [{
-                            description: "Failure with screen reader and keyboard - Lacks labels to forms.",
+                            description: "Failure with screen reader - No labels",
                             value: 0
                         }, {
-                            description: "Failure with screen reader (e.g. CAPTCHA without alternative or inaccessible forms).",
+                            description: "Failure with screen reader - Bad CAPTCHA",
                             value: 33
                         }, {
-                            description: "CAPTCHA alternative offered or some accessible forms but some labels may be misleading.",
+                            description: "Good CAPTCHA, some missing Labels",
                             value: 67
                         }, {
-                            description: "Simple, accessible forms with clear labels e.g. 'username (email)' and 'password'.",
+                            description: "Labeled Forms, no CAPTCHA",
                             value: 100
                         }],
                     }, {
@@ -130,16 +166,16 @@
                         url: 'tests/test2.html',
                         webPage: 'http://www.web2access.org.uk/test/2/',
                         rank: [{
-                            description: "None, detrimental to understanding of content. No option to add alt-tag if uploading image to web pages.",
+                            description: "None ALT text, No option to add",
                             value: 0
                         }, {
-                            description: "Inadequate/sparse alternative text even to actual website images not just those added by users.",
+                            description: "Inadequate/sparse ALT tag text",
                             value: 33
                         }, {
-                            description: "Alternative text offered but lacks brevity or clarity e.g. image of duck.",
+                            description: "ALT tag text, but lacks clarity",
                             value: 67
                         }, {
-                            description: "Acceptable alternative text throughout.",
+                            description: "Acceptable alternative text",
                             value: 100
                         }],
                     }, {
@@ -148,16 +184,16 @@
                         url: 'tests/test3.html',
                         webPage: 'http://www.web2access.org.uk/test/3/',
                         rank: [{
-                            description: "Non-defined links such as 'click here' or just 'download'.",
+                            description: "Non-defined links such as 'click here'",
                             value: 0
                         }, {
-                            description: "Non-defined links such as 'click here' or just 'download', but with explanatory title attributes.",
+                            description: "Non-defined links such as 'click here', but with explanatory title attributes",
                             value: 33
                         }, {
-                            description: "Most links understandable or provided in sentences. May have some duplicates.",
+                            description: "Most links understandable with some duplicates",
                             value: 67
                         }, {
-                            description: "Links fully appropriate, used throughout the site plus alternative navigation element.",
+                            description: "Links fully appropriate",
                             value: 100
                         }],
                     }, {
@@ -184,16 +220,16 @@
                         url: 'tests/test5.html',
                         webPage: 'http://www.web2access.org.uk/test/8/',
                         rank: [{
-                            description: "Page layout is built using tables and access is poor",
+                            description: "Layout tables lead to poor access",
                             value: 0
                         }, {
-                            description: "Data tables, if used, have no headings. Layout tables do not impact on screen reader.",
+                            description: "Data tables, if used, have no headings. Layout tables don't impact on screen reader.",
                             value: 33
                         }, {
                             description: "Data tables incorrect layout. Navigation with a screen reader possible with effort.",
                             value: 67
                         }, {
-                            description: "Page layout does not use tables and/or headered tables are used to present data.",
+                            description: "No Layout Tables, all Data Tables labeled.",
                             value: 100
                         }],
                     }];
@@ -202,4 +238,17 @@
     $scope.test = $scope.tests[0];
 });
 
-            
+
+// JQUERY Related code for the POPUP.html
+    j(document).ready(function(){
+        j('#nav_stick').hide();
+        j(window).scroll(function() {
+
+            if(j(this).scrollTop() > 100) {
+                j('#nav_stick').fadeIn("slow");
+            } else {
+                j('#nav_stick').fadeOut("slow");
+            }
+
+        });
+    });

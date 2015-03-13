@@ -3,7 +3,7 @@
   width: 500px;
   min-height: 10px;
   height: 300px;
-  margin: 12px;
+  padding:12px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -26,4 +26,68 @@ textarea {
 }
 .legend{
   margin-left: 2em !important;
+}
+#nav_stick{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100% !important;
+  background-image: linear-gradient(rgb(48,88,134), rgb(40,73,111));
+  background-color: #f8f8f8;
+  border-color: #e7e7e7;
+  min-height: 40px;
+  border: 1px solid transparent;
+  color: rgba(239, 239, 239, 1);
+  z-index: 100;
+  padding: 10px;
+}
+#nav_stick a{
+  color: rgba(239, 239, 239, 1);
+  text-decoration: underline;
+}
+#nav_stick a:hover{
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+}
+.leftButton{
+  position: fixed;
+  top: 10px;
+  left: 10px;
+}
+.rightButton{
+  position: fixed;
+  top: 10px;
+  right: 10px;
+}
+.star{
+  width: 25px;
+}
+.star:hover{
+  cursor: pointer;
+}
+#stars{
+  font-size: 22px;
+  color: rgb(252, 200, 20);
+}
+.miniRanking{
+  color: rgba(0,0,0,0.8);
+  font-size: 16px;
+  width: 420px;
+  border-radius: 3px;
+  color: rgba(239, 239, 239, 1);
+  margin-bottom: 10px;
+}
+#rankClear{
+  position: fixed;
+  right: 10px;
+  top: 50px;
+}
+.web2access{
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.web2access img{
+  height: 20px;
 }

@@ -6,134 +6,170 @@
         <link rel="stylesheet" href="css/app/popup.css">
         <link rel="stylesheet" href="css/lib/css/bootstrap.css">
         <script src="js/lib/angular.min.js"></script>
+        <script src="js/lib/jquery-1.11.1.min.js"></script>
         <!-- Next have a look on APP.js It just defines Angular Modules, which carries the same name as your HTML NG-APP does -->
         <script src="js/app/app.js"></script>
-        
         <!--Then go to POPUP.js ... it is being added to the module that you have just created in APP.js-->
         <script src="js/app/popup.js"></script>
-
         <script src="js/lib/ui-bootstrap-aj.min.js"></script>
     </head>
-    <body id="popup">
-        <header>
-            <h3 class="text-center">Web2Access Review Tool</h3>
-        </header>
 
-        <div ng-controller="PageController">
-            <p class="text-center">{{message}}</p>
-            <p class="text-center"><b>Page URL</b>: <a href="{{parser.host}}">{{parser.host}}</a></p>
+    <body>
+        <p class="web2accessP"><span class="web2access"><img src="img/Untitled.png"/> Web2Access</span></p>
+        <div id="popup">
+            <div ng-controller="PageController">
+                
+                <div id="nav_stick">
+                    
+                    
+                    <h4 class="text-center">
+                        <button type="button" class="btn btn-primary leftButton" disabled="disabled" ng-if=" test.id < 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-primary leftButton" ng-click="back();" ng-if=" test.id > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                        Test {{test.id + 1}}: <a href="{{test.webPage}}" tooltip-placement="bottom" target="_blank" tooltip="Click for more information on {{test.name}}">{{test.name}}</a>
+                        <button type="submit" class="btn btn-primary rightButton" ng-click="forward();" ng-if=" test.id < 4 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-primary rightButton" disabled="disabled" ng-if=" test.id > 3 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                    </h4>
 
-            <!-- <ul>
-                <li>href = {{parser.href}}</li>
-                <li>protocol = {{parser.protocol}}</li>
-                <li>host = {{parser.host}}</li>
-                <li>hostname = {{parser.hostname}}</li>
-                <li>port = {{parser.port}}</li>
-                <li>pathname = {{parser.pathname}}</li>
-            </ul> -->
+                    <div class="miniRanking">
 
-            <h4 class="text-center">Test {{test.id + 1}}: <a href="{{test.webPage}}" target="_blank" tooltip="Click for more information on {{test.name}}"><u>{{test.name}}</u></a></h4>
+                        <rating ng-model="rate" max="max" id="stars" readonly="isReadonly" ng-click="selectStar(rate); testResults[test.id].checkScore = dude" on-hover="hoveringOver(value)" > </rating> <b>{{test.rank[overStar-1].description}}</b>
+                        <!-- <span class="label" ng-class="{'label-warning': percent<30, 'label-info': percent>=30 && percent<70, 'label-success': percent>=70}" ng-show="overStar && !isReadonly">{{percent}}%</span> -->
 
-            
-            <form name="myForm">
-                <div class="text-center">
-                    <button type="button" class="btn btn-primary" disabled="disabled" ng-if=" test.id < 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-                    <button type="button" class="btn btn-primary" ng-click="back();" ng-if=" test.id > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-                    <div class="btn-group" dropdown is-open="status.isopen">
-                        <button type="button" class="btn btn-danger dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-                            Reset <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="#" ng-click="reset(test.id);">Reset the Test</a></li>
-                            <li><a href="#" ng-click="reset(false);">Reset all Tests</a></li>
+                    </div>
+
+                    <button class="btn btn-danger" ng-click="rate = 0; reset(test.id);" ng-disabled="isReadonly" id="rankClear"><span class="glyphicon glyphicon-trash"></span></button>
+
+                        <!-- <pre style="margin:15px 0;">Rate: <b>{{rate}}</b> - Readonly is: <i>{{isReadonly}}</i> - Hovering over: <b>{{overStar || "none"}} </b></pre> -->
+
+                        
+                        <!-- <button class="btn btn-sm btn-default" ng-click="isReadonly = ! isReadonly">Toggle Readonly</button> -->
+
+                        <!-- <span ng-repeat="i in getNumber(stars) track by $index">
+                            <img ng-mouseenter="starOnHover($index, true)" ng-if="(testResults[test.id].checkScore) && (testResults[test.id].checkScore >= $index)" ng-mouseleave="starOnHover($index, false)" ng-click="testResults[test.id].checkScore = $index, selectStar($index)" src="img/star_onhover.png" class="star" id="star{{$index+1}}">
+                            <img ng-mouseenter="starOnHover($index, true)" ng-if="(!testResults[test.id].checkScore) || (testResults[test.id].checkScore < $index)" ng-if="" ng-mouseleave="starOnHover($index, false)" ng-click="testResults[test.id].checkScore = $index, selectStar($index)" src="img/star_neutral.png" class="star" id="star{{$index+1}}"> 
+                        </span>:  -->
+
+
+                        
+                    
+                    <table style="width:100%">
+                        <tr>
+                            <td><label for='testSummary' class="control-label">Why?:</label></td>
+                            <td><input type="text" name='summary' class="form-control" id='testSummary' placeholder="Enter your comments here..." ng-model="testResults[test.id].checkSummary" ng-required="true" required></input></td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- <p class="text-center"><b>Page URL</b>: <a href="{{parser.host}}">{{parser.host}}</a></p> -->
+
+                <!-- <ul>
+                    <li>href = {{parser.href}}</li>
+                    <li>protocol = {{parser.protocol}}</li>
+                    <li>host = {{parser.host}}</li>
+                    <li>hostname = {{parser.hostname}}</li>
+                    <li>port = {{parser.port}}</li>
+                    <li>pathname = {{parser.pathname}}</li>
+                </ul> -->
+
+                <h4 class="text-center">Test {{test.id + 1}}: <a href="{{test.webPage}}" target="_blank" tooltip="Click for more information on {{test.name}}"><u>{{test.name}}</u></a></h4>
+
+                <form name="myForm">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary" disabled="disabled" ng-if=" test.id < 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-primary" ng-click="back();" ng-if=" test.id > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                        <div class="btn-group" dropdown is-open="status.isopen">
+                            <button type="button" class="btn btn-danger dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+                                Reset <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" ng-click="reset(test.id);">Reset the Test</a></li>
+                                <li><a href="#" ng-click="reset(false);">Reset all Tests</a></li>
+                            </ul>
+                        </div>
+                        <button type="submit" class="btn btn-primary" ng-click="forward();" ng-if=" test.id < 4 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-primary" disabled="disabled" ng-if=" test.id > 3 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                    </div><br/>
+
+                    <table class='fullWidth table table-hover'>
+                        <tr class='odd'>
+                            <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='0' id='score0' ng-change="selected()"/></td>
+                            <td scope='row'><img class="rankStars" src='img/rank0.png' alt='Poor' /></td>
+                            <td><label for='score0'>{{test.rank[0].description}}</label></td>
+                        </tr>
+                        <tr class='even'>
+                            <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='33' id='score33' ng-change="selected()"/></td>
+                            <td scope='row'><img class="rankStars" src='img/rank1.png' alt='Fair' /></td>
+                            <td><label for='score33'>{{test.rank[1].description}}</label></td>
+                        </tr>
+                        <tr class='odd'>
+                            <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='67' id='score67' ng-change="selected()"/></td>
+                            <td scope='row'><img class="rankStars" src='img/rank2.png' alt='Good' /></td>
+                            <td><label for='score67'>{{test.rank[2].description}}</label></td>
+                        </tr>
+                        <tr class='even'>
+                            <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='100' id='score100' ng-change="selected()"/></td>
+                            <td scope='row'><img class="rankStars" src='img/rank3.png' alt='Excellent' /></td>
+                            <td><label for='score100'>{{test.rank[3].description}}</label></td>
+                        </tr>
+                    </table>
+                    <input type='hidden' name='test' ng-model="testNumber" value='{{test.id}}' />
+                    <p>
+                        <label for='testSummary'>Why have you chosen this score?</label><br/>
+                        <textarea name='summary' class="form-control" rows='3' id='testSummary' ng-model="testResults[test.id].checkSummary" ng-required="true" required></textarea>
+                    </p>
+                    
+                    <div class="text-center" ng-if=" test.id > 3 ">
+                        <button type="submit" class="btn btn-lg btn-success">Submit <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button><br/>
+                    </div>
+                </form>
+
+
+                <!-- <ng-form name="exampleForm">
+                    <textarea type="text" ng-model="commentBox.text" ng-required="true"></textarea>
+                    <button ng-disabled="exampleForm.$invalid" ng-click="onsubmit()">asdfasdf</button>
+                </ng-form> -->
+
+                <div ng-if = "test.id == 3">
+                    <div ng-include="test.url"></div>
+                </div>
+
+
+                <div ng-if = "test.id != 3">
+                    <p ng-if=" test.id == 0 " class="text-center">There are <b>{{formData.numberOfForms}}</b> forms on the page and <b>{{formData.numberOfFormElements}}</b> input fields (<b>{{formData.notLabeledFields}}</b> of which is not labeled)</p>
+
+                    <p ng-if=" test.id == 1 " class="text-center">There are <b>{{pageImages.numberOfImages}}</b> images, <b>{{pageImages.numberOfImagesWithAlt}}</b> of which has ALT tags (<b>{{pageImages.numberOfImagesWithEmptyAlt}}</b> of them are empty)</p>
+
+                    <p ng-if=" test.id == 2 " class="text-center">There are <b>{{pageLinks.numberOfLinks}}</b> links, <b>{{pageLinks.numberOfBadLinks}}</b> of which are Bad</p>
+
+                    <p ng-if=" test.id == 4 " class="text-center">There are <b>{{pageTables.numberOfTables}}</b> tables, <b>{{pageTables.numberOfDangerTables}}</b> of which are Bad</p>
+
+                    <button class="btn btn-primary" ng-click="testsExamples = !testsExamples">
+                        <span ng-if="testsExamples">Hide Details <span class="glyphicon glyphicon-triangle-top"></span></span>
+                        <span ng-if="!testsExamples">Show Details <span class="glyphicon glyphicon-triangle-bottom"></span></span>
+                    </button><hr/>
+
+                    <div collapse="!testsExamples" class="well">
+                        <div class="text-center"><b>Legend:</b> 
+                            <span class="label label-danger legend">FAILED</span>
+                            <span class="label label-success legend">PASSED</span>
+                            <span class="label label-warning legend">WARNING</span>
+                        </div><br/>
+                        <ul>
+
+                            <div ng-include="test.url"></div>
+
                         </ul>
                     </div>
-                    <button type="submit" class="btn btn-primary" ng-click="forward();" ng-if=" test.id < 4 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-                    <button type="button" class="btn btn-primary" disabled="disabled" ng-if=" test.id > 3 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+
+                    <!-- <pre>{{pageImages}}</pre>
+                    <pre>{{formData}}</pre>
+                    <pre>{{pageLinks}}</pre>
+                    <pre>{{pageTables}}</pre> -->
                 </div>
 
-                
-                <hr/>
+                <pre> Test Results: {{testResults | json}}</pre>
 
-                <table class='fullWidth'>
-                    <tr class='odd'>
-                        <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='0' id='score0' ng-change="selected()"/></td>
-                        <td scope='row'><img class="rankStars" src='img/rank0.png' alt='Poor' /></td>
-                        <td><label for='score0'>{{test.rank[0].description}}</label></td>
-                    </tr>
-                    <tr class='even'>
-                        <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='33' id='score33' ng-change="selected()"/></td>
-                        <td scope='row'><img class="rankStars" src='img/rank1.png' alt='Fair' /></td>
-                        <td><label for='score33'>{{test.rank[1].description}}</label></td>
-                    </tr>
-                    <tr class='odd'>
-                        <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='67' id='score67' ng-change="selected()"/></td>
-                        <td scope='row'><img class="rankStars" src='img/rank2.png' alt='Good' /></td>
-                        <td><label for='score67'>{{test.rank[2].description}}</label></td>
-                    </tr>
-                    <tr class='even'>
-                        <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='100' id='score100' ng-change="selected()"/></td>
-                        <td scope='row'><img class="rankStars" src='img/rank3.png' alt='Excellent' /></td>
-                        <td><label for='score100'>{{test.rank[3].description}}</label></td>
-                    </tr>
-                </table>
-                <input type='hidden' name='test' ng-model="testNumber" value='{{test.id}}' />
-                <p>
-                    <label for='testSummary'>Why have you chosen this score?</label><br/>
-                    <textarea name='summary' class="form-control" rows='4' id='testSummary' ng-model="testResults[test.id].checkSummary" ng-required="true" required></textarea>
-                </p>
-                
-                <div class="text-center" ng-if=" test.id > 3 ">
-                    <button type="submit" class="btn btn-lg btn-success">Submit <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button><br/>
-                </div>
-            </form>
-
-
-            <!-- <ng-form name="exampleForm">
-                <textarea type="text" ng-model="commentBox.text" ng-required="true"></textarea>
-                <button ng-disabled="exampleForm.$invalid" ng-click="onsubmit()">asdfasdf</button>
-            </ng-form> -->
-
-            <div ng-if = "test.id == 3">
-                <div ng-include="test.url"></div>
             </div>
-
-
-            <div ng-if = "test.id != 3">
-                <p ng-if=" test.id == 0 " class="text-center">There are <b>{{formData.numberOfForms}}</b> forms on the page and <b>{{formData.numberOfFormElements}}</b> input fields (<b>{{formData.notLabeledFields}}</b> of which is not labeled)</p>
-
-                <p ng-if=" test.id == 1 " class="text-center">There are <b>{{pageImages.numberOfImages}}</b> images, <b>{{pageImages.numberOfImagesWithAlt}}</b> of which has ALT tags (<b>{{pageImages.numberOfImagesWithEmptyAlt}}</b> of them are empty)</p>
-
-                <p ng-if=" test.id == 2 " class="text-center">There are <b>{{pageLinks.numberOfLinks}}</b> links, <b>{{pageLinks.numberOfBadLinks}}</b> of which are Bad</p>
-
-                <p ng-if=" test.id == 4 " class="text-center">There are <b>{{pageTables.numberOfTables}}</b> tables, <b>{{pageTables.numberOfDangerTables}}</b> of which are Bad</p>
-
-                <button class="btn btn-primary" ng-click="testsExamples = !testsExamples">
-                    <span ng-if="testsExamples">Show Examples <span class="glyphicon glyphicon-chevron-down"></span></span>
-                    <span ng-if="!testsExamples">Hide Examples <span class="glyphicon glyphicon-chevron-up"></span></span>
-                </button><hr/>
-
-                <div collapse="testsExamples" class="well">
-                    <div class="text-center"><b>Legend:</b> 
-                        <span class="label label-danger legend">FAILED</span>
-                        <span class="label label-success legend">PASSED</span>
-                        <span class="label label-warning legend">WARNING</span>
-                    </div><br/>
-                    <ul>
-
-                        <div ng-include="test.url"></div>
-
-                    </ul>
-                </div>
-
-                <pre>{{pageImages}}</pre>
-                <pre>{{formData}}</pre>
-                <pre>{{pageLinks}}</pre>
-                <pre>{{pageTables}}</pre>
-            </div>
-
-            <pre> Test Results: {{testResults | json}}</pre>
-
         </div>
     </body>
 </html>
