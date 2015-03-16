@@ -2,9 +2,14 @@
 
 myApp.controller("PageController", function ($scope) {
     // Stores data submitted by user on all tests
-    $scope.testResults = [];  
+    $scope.testResults = [{id: 0},
+                          {id: 1},
+                          {id: 2},
+                          {id: 3},
+                          {id: 4}];  
     // A Variable for a Button to toggle (Show/Hide) Test examples 
     $scope.testsExamples = true;
+    $scope.allowSubmit = [];
 
     // Buttons for Previous/Next test
     $scope.back = function() {
@@ -91,7 +96,7 @@ myApp.controller("PageController", function ($scope) {
             // Test 1, highlight Forms
             $scope.requestForms = function() {
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageForms' }, function (response) { 
-                    $scope.formData = response;
+                    $scope.testData = response;
                     $scope.$apply();
                 });
             };
@@ -99,7 +104,7 @@ myApp.controller("PageController", function ($scope) {
             // Test 2, Send messages to the main web page (CONTENTS.js), which has Listen function, and get the response asnwer
             $scope.requestImages = function(){
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageImages' }, function (response) {
-                    $scope.pageImages = response;
+                    $scope.testData = response;
                     $scope.$apply();
                 });
             };
@@ -107,7 +112,7 @@ myApp.controller("PageController", function ($scope) {
             // Test 3,
             $scope.requestLinks = function(){
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageLinks' }, function (response) {
-                    $scope.pageLinks = response;
+                    $scope.testData = response;
                     $scope.$apply();
                 });
             };
@@ -121,7 +126,7 @@ myApp.controller("PageController", function ($scope) {
             // Test 5,
             $scope.requestTables = function() {
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageTables' }, function (response) { 
-                    $scope.pageTables = response;
+                    $scope.testData = response;
                     $scope.$apply();
                 });
             };
@@ -138,6 +143,25 @@ myApp.controller("PageController", function ($scope) {
                     $scope.testResults = [];
                 }
             };
+
+            $scope.checkResults = function(){
+                for (i=0; i<=4; i++){
+                    if($scope.testResults[i]){
+                        if(!$scope.testResults[i].checkScore){
+                            $scope.allowSubmit[i] = "Test "+(i+1)+": Score"; 
+                        } 
+                        if (!$scope.testResults[i].checkSummary){
+                            if($scope.allowSubmit[i]){
+                                $scope.allowSubmit[i] = $scope.allowSubmit[i]+" and Summary";
+                            } else {
+                                $scope.allowSubmit[i] = "Test "+(i+1)+": Summary";
+                            }
+                        }
+                    } else {
+                        $scope.allowSubmit[i] = "Test "+(i+1)+": Score and Summary";
+                    }
+                }
+            }
         }
     });
 
