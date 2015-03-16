@@ -136,6 +136,11 @@ myApp.controller("PageController", function ($scope) {
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'HighlightImage', 'imageIndex': imageIndex, 'approved': approved }, function (response) { });
             };
 
+            // Send request to CONTENT.js (which will find highlighted text), and then to Background.js which will actually SPEAK the text
+            $scope.ttsGoogle = function() {
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'textToSpeech'}, function (response) { });
+            };
+
             $scope.reset = function(testID) {
                 if(testID){
                     $scope.testResults[testID] = null;

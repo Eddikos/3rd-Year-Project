@@ -77,6 +77,27 @@ function (request, sender, sendResponse) {
         }
     }
 
+    if (request.action == 'textToSpeech') {
+        // Code to get the Selected Text from the page taken from Google Extension Samples
+        // SEL--Speak Selection - https://developer.chrome.com/extensions/samples
+        var focused = document.activeElement;
+        var selectedText;
+        if (focused) {
+            try {
+                selectedText = focused.value.substring(focused.selectionStart, focused.selectionEnd);
+            } catch (err) {
+
+            }
+        }
+        if (selectedText == undefined) {
+            var sel = window.getSelection();
+            var selectedText = sel.toString();
+        }
+        
+        chrome.runtime.sendMessage({toSay: selectedText}, function() {}); 
+        console.log(request.toSay);
+    }
+
 
 
 
@@ -87,7 +108,6 @@ function (request, sender, sendResponse) {
         // Global variable to count all elements from the FORM
         var i = 0
         
-        chrome.runtime.sendMessage({toSay: "hello Vikram"}, function() {}); 
         // Highlight all existing forms
         $('form').each(function(index) {
             $(this).addClass("highlightItems");

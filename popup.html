@@ -68,6 +68,7 @@
                             <li><a href="#" ng-click="reset(false);">Reset all Tests</a></li>
                         </ul>
                     </div>
+                    <button type="button" class="btn btn-sm btn-warning" ng-click="ttsGoogle()" tooltip-placement="bottom" tooltip="Text To Speech converter. First select a text within the webpage"><span class="glyphicon glyphicon-volume-up"></span></button>
                 </div>
                 <hr class="web2accessHr"/>
                 <h4 class="text-center">
@@ -108,7 +109,7 @@
                     <input type='hidden' name='test' ng-model="testNumber" value='{{test.id}}' />
                     <p>
                         <label for='testSummary'>Why have you chosen this score?</label><br/>
-                        <textarea name='summary' class="form-control" rows='3' id='testSummary' ng-model="testResults[test.id].checkSummary"></textarea>
+                        <textarea name='summary' class="form-control" rows='2' id='testSummary' ng-model="testResults[test.id].checkSummary"></textarea>
                     </p>
                     
                     <div class="text-center" ng-if=" test.id > 3 ">

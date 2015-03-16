@@ -25,6 +25,12 @@
 		"run_at": "document_start",
 		"css" : ["css/app/content.css"]
 	} ],
+
+	"background": {
+	    "scripts": [
+	      "background.js"
+	    ]
+	},
 	"minimum_chrome_version": "18",
 	"permissions":[
 		"http://*/",
@@ -36,21 +42,6 @@
 	    "tabs",
 	    "notifications",
 	    "storage",
-	    "ttsEngine"
-    ],
-    "tts_engine": {
-          "voices": [
-            {
-              "voice_name": "Alice",
-              "lang": "en-US",
-              "gender": "female",
-              "event_types": ["start", "marker", "end"]
-            },
-            {
-              "voice_name": "Pat",
-              "lang": "en-US",
-              "event_types": ["end"]
-            }
-        ]
-    }
+	    "tts"
+    ]
 }
