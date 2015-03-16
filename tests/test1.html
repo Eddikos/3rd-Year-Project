@@ -1,14 +1,7 @@
-			
-	                <li ng-repeat="formElement in formData.formElements">
-	                	<div class="imageAltOnHover" ng-mouseenter="highlightImage(formElement.index, true)" ng-mouseleave="highlightImage(formElement.index, false)">
-		                    <span ng-if="!formElement.passed" class="label label-danger">Form Element No. {{formElement.index + 1}}:</span>
-		               		<span ng-if="formElement.passed == true" class="label label-success">Form Element No. {{formElement.index + 1}}:</span>
-		               		<span ng-if="formElement.passed == 'warning'" class="label label-warning">Form Element No. {{formElement.index + 1}}:</span>
-		               	</div>
-	                    <ul>
-			                <li>Passed: <b class="nullAlt">{{formElement.passed}}</b></li>
-			                <li ng-if="formElement.reason">Reason to Fail: {{formElement.reason}}</li>    
-			            </ul>
-	                </li>                       
-
-            
+<!-- 
+	If you have some Specific data that you want to be 
+	shown within the test Details:
+	First, add it to the Array of TESTELEMENTS in CONTENT.js
+	Secondly, print it hear:
+		Ex: <li>Passed: <b class="nullAlt">{{pageElement.passed}}</b></li>    
+-->   

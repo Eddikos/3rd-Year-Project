@@ -1,17 +1,3 @@
-
-	                <li ng-repeat="pageLink in pageLinks.links">
-	                	<div class="imageAltOnHover" ng-mouseenter="highlightImage(pageLink.index, true)" ng-mouseleave="highlightImage(pageLink.index, false)">
-		               		<span ng-if="!pageLink.passed" class="label label-danger">Link No. {{pageLink.index + 1}}:</span>
-		               		<span ng-if="pageLink.passed == true" class="label label-success">Link No. {{pageLink.index + 1}}:</span>
-		               		<span ng-if="pageLink.passed == 'warning'" class="label label-warning">Link No. {{pageLink.index + 1}}:</span>
-	                    </div>
-	                    <ul>
-			                <li>Link Text: {{pageLink.text}} <span ng-if="!pageLink.text" class="nullAlt"><b>null</b></span></li>
-			                <li>Passed: <b class="nullAlt">{{pageLink.passed}}</b></li>
-			                <li>Status: {{pageLink.status}}</li>
-			                <li ng-if="pageLink.reason">Reason to Fail: {{pageLink.reason}}</li>
-			                <li>URL: <a href="{{pageLink.link}}">{{pageLink.link}}</a></li>         
-			            </ul>
-	                </li>     
- 
-            
+			                <li>Link Text: {{pageElement.text}} <span ng-if="!pageElement.text" class="nullAlt"><b>null</b></span></li>
+			                <li>Status: {{pageElement.status}}</li>
+			                <li>URL: <a href="{{pageElement.link}}">{{pageElement.link}}</a></li>         

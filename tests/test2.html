@@ -1,16 +1,4 @@
-
-	                <li ng-repeat="pageImage in pageImages.imgs">
-	                    <div class="imageAltOnHover" ng-mouseenter="highlightImage(pageImage.index, true)" ng-mouseleave="highlightImage(pageImage.index, false)">
-		                    <span ng-if="!pageImage.passed" class="label label-danger">Img No.: {{pageImage.index + 1}}:</span>
-		               		<span ng-if="pageImage.passed" class="label label-success">Img No.: {{pageImage.index + 1}}:</span>
-		               	</div>
-	                    <ul>
 			                <li>Img ALT: 
-			                	<span ng-if="!pageImage.alt" class="nullAlt"><b>null</b></span>
-	                			<span ng-if="pageImage.alt">"{{pageImage.alt}}"</span>
+			                	<span ng-if="!pageElement.alt" class="nullAlt"><b>null</b></span>
+	                			<span ng-if="pageElement.alt">"{{pageElement.alt}}"</span>
 	                		</li>
-			                <li>Passed: <b class="nullAlt">{{pageImage.passed}}</b></li> 
-			                <li ng-if="pageImage.reason">Reason to Fail: {{pageImage.reason}}</li>        
-			            </ul>
-	                </li>                       
-	            

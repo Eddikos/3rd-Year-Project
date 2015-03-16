@@ -1,31 +1,38 @@
+body{
+  background-image: url("../../img/7.jpg");
+  background-repeat: repeat;
+  
+}
 #popup {
   min-width: 500px;
   width: 500px;
   min-height: 10px;
-  height: 300px;
   padding:12px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-color: #fbf0e6;
+  background-color: rgba(0,0,0,0.2);
+  z-index: 100;
 }
 .rankStars{
   margin: 5px;
-  width: 60px;
+  height: 17px;
 }
 textarea {
     resize: none;
 }
 .imageAltOnHover:hover{
   border: 1px solid black;
+  border-radius: 3px;
   cursor: pointer;
+  padding: 0px 2px 3px 2px;
 }
 .nullAlt{
   font-family: "Courier New", Courier, serif;
 }
 .legend{
-  margin-left: 2em !important;
+  margin-left: 1em !important;
 }
 #nav_stick{
   position: fixed;
@@ -60,6 +67,16 @@ textarea {
   top: 10px;
   right: 10px;
 }
+.leftButton2{
+  position: absolute;
+  top: 50px;
+  left: 10px;
+}
+.rightButton2{
+  position: absolute;
+  top: 50px;
+  right: 10px;
+}
 .star{
   width: 25px;
 }
@@ -84,9 +101,21 @@ textarea {
   top: 50px;
 }
 .web2access{
-  position: absolute;
+  float: left;
+  /*position: absolute;
   top: 0;
-  left: 0;
+  left: 0;*/
+}
+.web2accessP{
+  
+}
+.web2accessHr{
+  border-bottom: 1px solid black;
+  margin-bottom: -5px;
+  margin-top: 0px;
+  position: relative;
+  left: -12px;
+  width: 105%;
 }
 .web2access img{
   height: 20px;
