@@ -1,5 +1,5 @@
 body{
-  background-image: url("../../img/7.jpg");
+  background-image: url("../../img/2.jpg");
   background-repeat: repeat;
   
 }
@@ -12,15 +12,28 @@ body{
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0,0,0,0.7);
   z-index: 100;
+  color: rgba(255,255,255,0.8);
+}
+#popup a{
+  color: rgba(239, 239, 239, 1);
+  text-decoration: underline;
+}
+#popup a:hover{
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
 }
 .rankStars{
   margin: 5px;
   height: 17px;
 }
+.tickCross{
+  height: 35px;
+  margin-left: 5px;
+}
 textarea {
-    resize: none;
+  resize: none;
 }
 .imageAltOnHover:hover{
   border: 1px solid black;
@@ -69,13 +82,13 @@ textarea {
 }
 .leftButton2{
   position: absolute;
-  top: 50px;
-  left: 10px;
+  top: 96px;
+  left: 12px;
 }
 .rightButton2{
   position: absolute;
-  top: 50px;
-  right: 10px;
+  top: 96px;
+  right: 12px;
 }
 .star{
   width: 25px;
@@ -102,17 +115,26 @@ textarea {
 }
 .web2access{
   float: left;
-  /*position: absolute;
-  top: 0;
-  left: 0;*/
+  position: absolute;
+  left: 10px;
+  border: 1px solid rgba(255,255,255,0.5);
+  padding: 4px;
+  border-radius: 2px;
 }
-.web2accessP{
-  
+.web2access:hover{
+  background-color: rgba(255,255,255,0.4);
+  color: black;
+  cursor: pointer;
+}
+.showHideButton{
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .web2accessHr{
-  border-bottom: 1px solid black;
-  margin-bottom: -5px;
-  margin-top: 0px;
+  border: 0; 
+  border-top: 1px solid rgba(0,0,0,0.4);;
+  margin-bottom: 12px;
+  margin-top: 8px;
   position: relative;
   left: -12px;
   width: 105%;
@@ -120,3 +142,74 @@ textarea {
 .web2access img{
   height: 20px;
 }
+
+
+/*Checkout progressH Bar ***********************/
+
+
+/* Form progressH */
+.progressH {
+  width: 100%;
+  margin: 0px auto;
+  text-align: center;
+}
+.progressH .circle,
+.progressH .bar {
+  display: inline-block;
+  background: #fff;
+  width: 30px; height: 30px;
+  border-radius: 40px;
+  border: 1px solid #d5d5da;
+}
+.progressH .bar {
+  position: relative;
+  height: 6px;
+  margin: 0 -1px 4px -5px;
+  border-left: none;
+  border-right: none;
+  border-radius: 0;
+}
+.progressH .circle .label {
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  line-height: 16px;
+  border-radius: 22px;
+  margin-top: 3px;
+  color: #b5b5ba;
+  font-size: 14px;
+}
+.progressH .circle .title {
+  font-size: 13px;
+  line-height: 30px;
+  margin-left: -5px;
+}
+
+/* Done / Active */
+.progressH .bar.done,
+.progressH .circle.done {
+  background: #eee;
+}
+.progressH .bar.active {
+  background: linear-gradient(to right, #EEE 40%, #FFF 60%);
+}
+.progressH .circle.done .label {
+  color: #FFF;
+  background: #8bc435;
+  box-shadow: inset 0 0 2px rgba(0,0,0,.2);
+}
+.progressH .circle.done .title {
+}
+.progressH .circle.active .label {
+  color: #FFF;
+  background: #0c95be;
+  box-shadow: inset 0 0 2px rgba(0,0,0,.2);
+}
+.progressH .circle.active .title {
+  color: #0c95be;
+}
+.submitIcon{
+  margin-left: -6px;
+}
+
+/* END ****************************************/

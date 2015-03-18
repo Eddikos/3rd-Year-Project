@@ -69,7 +69,11 @@ function (request, sender, sendResponse) {
 
     // Request that may come from the Doogle Extension in order to highlight Hovered image
     if (request.action == 'HighlightImage') {
+        var element = $('.elementHighlightIndex' + request.imageIndex);
         if (request.approved){
+            if(element.is("input") && (element.attr('type') == "radio" || element.attr('type') == "checkbox")){
+                element.wrap( "<span class='black'></span>" );
+            }
             $('.elementHighlightIndex' + request.imageIndex).addClass('black');
         }
         if (!request.approved){
@@ -155,15 +159,15 @@ function (request, sender, sendResponse) {
                 }
                 if(label.length <=0){
                     testFailed(testElement, currentElement, "An Input Field is not Labeled");
-
-                    // Radio and CheckBox are treated separately because Their CSS can't be adjusted easily
-                    if (type == "radio" || type == "checkbox"){
-                        $(this).wrap( "<span class='testDanger'></span>" );
-                    }
                 }
             }
-            if (testElement.passed && (type == "radio" || type == "checkbox")){
-                $(this).wrap( "<span class='testSuccess'></span>" );
+            // Radio and CheckBox are treated separately because Their CSS can't be adjusted easily
+            if (type == "radio" || type == "checkbox"){
+                if (testElement.passed == true){
+                    $(this).wrap( "<span class='testSuccess'></span>" );
+                } else {
+                    $(this).wrap( "<span class='testDanger'></span>" );
+                }
             }
 
             testElements.push(testElement);
@@ -372,10 +376,11 @@ function (request, sender, sendResponse) {
         sendResponseToPopUp();
     }
 });
-    // Storing the data in Chrome.Storage.Sync
 
-    // chrome.storage.sync.set({'value': imgCount}, function() {
-    //     chrome.storage.sync.get("value", function(data) {
-    //         console.log("data", data.value);
-    //     });
-    // });
+// Storing the data in Chrome.Storage.Sync
+
+// chrome.storage.sync.set({'value': imgCount}, function() {
+//     chrome.storage.sync.get("value", function(data) {
+//         console.log("data", data.value);
+//     });
+// });

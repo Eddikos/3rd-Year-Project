@@ -8,8 +8,8 @@ myApp.controller("PageController", function ($scope) {
                           {id: 3},
                           {id: 4}];  
     // A Variable for a Button to toggle (Show/Hide) Test examples 
-    $scope.testsExamples = true;
-    $scope.allowSubmit = [];
+    $scope.testsExamples = false;
+    $scope.allowSubmit = true;
 
     // Buttons for Previous/Next test
     $scope.back = function() {
@@ -61,7 +61,7 @@ myApp.controller("PageController", function ($scope) {
             $scope.$watch('test.id', function(newVal, oldVal, scope) {
                 // Change of the Test ID means that a test was switched, then it is better to clean 
                 $scope.cleanPreviousCSS();
-                $scope.testsExamples = true;
+                $scope.testsExamples = false;
 
                 if($scope.testResults[newVal] && $scope.testResults[newVal].checkScore){
                     $scope.rate = 1 + Math.floor($scope.testResults[newVal].checkScore / 33);
@@ -153,17 +153,13 @@ myApp.controller("PageController", function ($scope) {
                 for (i=0; i<=4; i++){
                     if($scope.testResults[i]){
                         if(!$scope.testResults[i].checkScore){
-                            $scope.allowSubmit[i] = "Test "+(i+1)+": Score"; 
+                            $scope.allowSubmit = false; 
                         } 
                         if (!$scope.testResults[i].checkSummary){
-                            if($scope.allowSubmit[i]){
-                                $scope.allowSubmit[i] = $scope.allowSubmit[i]+" and Summary";
-                            } else {
-                                $scope.allowSubmit[i] = "Test "+(i+1)+": Summary";
-                            }
+                            $scope.allowSubmit = false;
                         }
                     } else {
-                        $scope.allowSubmit[i] = "Test "+(i+1)+": Score and Summary";
+                        $scope.allowSubmit = false;
                     }
                 }
             }
@@ -240,7 +236,7 @@ myApp.controller("PageController", function ($scope) {
                             description: "Content and navigation accessible.",
                             value: 67
                         }, {
-                            description: "Fully accessible with correct document structure.",
+                            description: "Fully accessible.",
                             value: 100
                         }],
                     }, {
@@ -248,6 +244,24 @@ myApp.controller("PageController", function ($scope) {
                         name: 'Appropriate use of Tables',
                         url: 'tests/test5.html',
                         webPage: 'http://www.web2access.org.uk/test/8/',
+                        rank: [{
+                            description: "Layout tables lead to poor access",
+                            value: 0
+                        }, {
+                            description: "Data tables, if used, have no headings. Layout tables don't impact on screen reader.",
+                            value: 33
+                        }, {
+                            description: "Data tables incorrect layout. Navigation with a screen reader possible with effort.",
+                            value: 67
+                        }, {
+                            description: "No Layout Tables, all Data Tables labeled.",
+                            value: 100
+                        }],
+                    }, {
+                        id: 5,
+                        name: 'Summary of Tests',
+                        url: 'tests/test6.html',
+                        webPage: 'http://www.web2access.org.uk/',
                         rank: [{
                             description: "Layout tables lead to poor access",
                             value: 0
@@ -281,3 +295,9 @@ myApp.controller("PageController", function ($scope) {
 
         });
     });
+
+// Test Progress Bar, idea taken from http://designscrazed.org/jquery-css3-progress-bars/
+    var i = 1;
+    j('.progressH .circle').removeClass().addClass('circle');
+    j('.progressH .bar').removeClass().addClass('bar');
+// End of Test Progres Bar
