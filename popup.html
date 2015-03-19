@@ -60,32 +60,32 @@
                         <li>port = {{parser.port}}</li>
                         <li>pathname = {{parser.pathname}}</li>
                     </ul> -->
-                    <a href="http://www.web2access.org.uk/" target="_blank">
-                        <div class="web2accessP text-right">
-                            <span class="web2access"><img src="img/Untitled.png"/> Web2Access</span>
-                            <div class="btn-group text-right" dropdown is-open="status.isopen">
-                                <button type="button" class="btn btn-sm btn-danger dropdown-toggle" dropdown-toggle ng-disabled="disabled">
-                                    Reset <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#" ng-click="reset(test.id);">Reset the Test</a></li>
-                                    <li><a href="#" ng-click="reset(false);">Reset all Tests</a></li>
-                                </ul>
-                            </div>
-                            <button type="button" class="btn btn-sm btn-primary" ng-click="ttsGoogle()" tooltip-placement="bottom" tooltip="Text To Speech converter. First select a text within the webpage"><span class="glyphicon glyphicon-volume-up"></span></button>
+                    <a href="http://www.web2access.org.uk/" target="_blank"><span class="web2access whiteLink" ><img src="img/Untitled.png"/> Web2Access</span></a>
+                    <div class="web2accessP text-right">
+                        <span class="web2access whiteLink" ><img src="img/Untitled.png"/> Web2Access</span>
+                        <div class="btn-group text-right" dropdown is-open="status.isopen">
+                            <button type="button" class="btn btn-sm btn-danger dropdown-toggle" dropdown-toggle ng-disabled="disabled">
+                                Reset <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#" ng-click="reset(test.id);">Reset the Test</a></li>
+                                <li><a href="#" ng-click="reset(false);">Reset all Tests</a></li>
+                            </ul>
                         </div>
-                    </a>
+                        <button type="button" class="btn btn-sm btn-primary" ng-click="ttsGoogle()" tooltip-placement="bottom" tooltip="Text To Speech converter. First select a text within the webpage"><span class="glyphicon glyphicon-volume-up"></span></button>
+                    </div>
+                    
                     <hr class="web2accessHr"/>
                 <!--Test Progress Bar, idea taken from http://designscrazed.org/jquery-css3-progress-bars/-->
                     <div class="progressH">
                         <div ng-repeat="testItem in tests" style="display: inline-block">
                             <div ng-if="testItem.id == test.id" class="circle active">
-                                <span class="label" ng-if="testItem.id != tests.length-1">{{testItem.id + 1}}</span>
-                                <span class="label" ng-if="testItem.id == tests.length-1"><span class="submitIcon glyphicon glyphicon-send" aria-hidden="true"></span></span>
+                                <span class="label" ng-if="testItem.id != tests.length-1" ng-click="navigate(testItem.id)">{{testItem.id + 1}}</span>
+                                <span class="label" ng-if="testItem.id == tests.length-1" ng-click="navigate(testItem.id)"><span class="submitIcon glyphicon glyphicon-send" aria-hidden="true"></span></span>
                             </div>
                             <div ng-if="testItem.id != test.id" class="circle done">
-                                <span class="label" ng-if="testItem.id != tests.length-1">{{testItem.id + 1}}</span>
-                                <span class="label" ng-if="testItem.id == tests.length-1"><span class="submitIcon glyphicon glyphicon-send" aria-hidden="true"></span></span>
+                                <span class="label" ng-if="testItem.id != tests.length-1" ng-click="navigate(testItem.id)">{{testItem.id + 1}}</span>
+                                <span class="label" ng-if="testItem.id == tests.length-1" ng-click="navigate(testItem.id)"><span class="submitIcon glyphicon glyphicon-send" aria-hidden="true"></span></span>
                             </div>
                             <span ng-if="testItem.id != tests.length-1" class="bar done"></span>
                         </div>
@@ -95,7 +95,7 @@
                     <h4 class="text-center">
                         <button type="button" class="btn btn-sm btn-primary leftButton2" disabled="disabled" ng-if=" test.id < 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
                         <button type="button" class="btn btn-sm btn-primary leftButton2" ng-click="back();" ng-if=" test.id > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-                        Test {{test.id + 1}}: <a href="{{test.webPage}}" tooltip-placement="bottom" target="_blank" tooltip="Click for more information on {{test.name}}">{{test.name}}</a><br/>
+                        Test {{test.id + 1}}: <a href="{{test.webPage}}" tooltip-placement="bottom" class="whiteLink" target="_blank" tooltip="Click for more information on {{test.name}}">{{test.name}}</a><br/>
                         <button type="submit" class="btn btn-sm btn-primary rightButton2" ng-click="forward();" ng-if=" test.id < 5 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
                         <button type="button" class="btn btn-sm btn-primary rightButton2" disabled="disabled" ng-if=" test.id > 4 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
                     </h4>
@@ -162,7 +162,7 @@
                             </div><br/>
                             <ul>
                                 <li ng-repeat="pageElement in testData.testElements">
-                                    <div class="imageAltOnHover" ng-mouseenter="highlightImage(pageElement.index, true)" ng-mouseleave="highlightImage(pageElement.index, false)">
+                                    <div class="imageAltOnHover" ng-mouseenter="highlightImage(pageElement.index, true)" ng-mouseleave="highlightImage(pageElement.index, false)" ng-click="scrollToTheElement(pageElement.index)">
                                         <span ng-if="!pageElement.passed" class="label label-danger">Element No. {{pageElement.index + 1}}:</span>
                                         <span ng-if="pageElement.passed == true" class="label label-success">Element No. {{pageElement.index + 1}}:</span>
                                         <span ng-if="pageElement.passed == 'warning'" class="label label-warning">Element No. {{pageElement.index + 1}}:</span>

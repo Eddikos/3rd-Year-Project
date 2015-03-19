@@ -50,7 +50,7 @@ function (request, sender, sendResponse) {
     }
 
     // Clear everything before moving to another Test
-    if(request && request.action != 'HighlightImage'){
+    if(request && request.action != 'HighlightImage' && request.action != 'scrollToElement'){
         // Remove all CSS classes for each test to start from scratch
         $('.highlightItems').removeClass('highlightItems');
         $('.testDanger').removeClass('testDanger');
@@ -69,12 +69,12 @@ function (request, sender, sendResponse) {
 
     // Request that may come from the Doogle Extension in order to highlight Hovered image
     if (request.action == 'HighlightImage') {
-        var element = $('.elementHighlightIndex' + request.imageIndex);
+        var element = $('.elementHighlightIndex' + request.elementIndex);
         if (request.approved){
             if(element.is("input") && (element.attr('type') == "radio" || element.attr('type') == "checkbox")){
                 element.wrap( "<span class='black'></span>" );
             }
-            $('.elementHighlightIndex' + request.imageIndex).addClass('black');
+            $('.elementHighlightIndex' + request.elementIndex).addClass('black');
         }
         if (!request.approved){
             $('.black').removeClass('black');
@@ -102,7 +102,12 @@ function (request, sender, sendResponse) {
         console.log(request.toSay);
     }
 
-
+    // If clicked on the element in the Test Results sections scroll to that element to make it easier to find
+    if (request.action == 'scrollToElement'){
+        $('html, body').animate({
+            scrollTop: $('.elementHighlightIndex' + request.elementIndex).offset().top
+        }, 1000);
+    }
 
 
     /*  

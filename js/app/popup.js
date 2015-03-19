@@ -14,11 +14,12 @@ myApp.controller("PageController", function ($scope) {
     // Buttons for Previous/Next test
     $scope.back = function() {
         $scope.test = $scope.tests[$scope.test.id-1];
-        $scope.selected = false;
     }
     $scope.forward = function() {
         $scope.test = $scope.tests[$scope.test.id+1];
-        $scope.selected = false;
+    }
+    $scope.navigate = function(testId){
+        $scope.test = $scope.tests[testId];
     }
 
     $scope.rate = 3;
@@ -62,6 +63,9 @@ myApp.controller("PageController", function ($scope) {
                 // Change of the Test ID means that a test was switched, then it is better to clean 
                 $scope.cleanPreviousCSS();
                 $scope.testsExamples = false;
+                $scope.selected = false;
+                $scope.allowSubmit = true;
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageCSS', 'disable': false }, function (response) { });
 
                 if($scope.testResults[newVal] && $scope.testResults[newVal].checkScore){
                     $scope.rate = 1 + Math.floor($scope.testResults[newVal].checkScore / 33);
@@ -119,7 +123,7 @@ myApp.controller("PageController", function ($scope) {
 
             // Test 4,
             $scope.toggleCSS = function(disable) {
-                $scope.disabled = disable;
+                $scope.enableDisable = disable;
                 chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageCSS', 'disable': disable }, function (response) { });
             };
 
@@ -132,8 +136,13 @@ myApp.controller("PageController", function ($scope) {
             };
 
             //Highlight the images in MAIN.html page hovered in the POPUP.html, plus pass varaible (whether onMouseEnter or onMouseLeave)
-            $scope.highlightImage = function(imageIndex, approved) {
-                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'HighlightImage', 'imageIndex': imageIndex, 'approved': approved }, function (response) { });
+            $scope.scrollToTheElement = function(elementIndex) {
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'scrollToElement', 'elementIndex': elementIndex }, function (response) { });
+            };
+
+            //Highlight the images in MAIN.html page hovered in the POPUP.html, plus pass varaible (whether onMouseEnter or onMouseLeave)
+            $scope.highlightImage = function(elementIndex, approved) {
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'HighlightImage', 'elementIndex': elementIndex, 'approved': approved }, function (response) { });
             };
 
             // Send request to CONTENT.js (which will find highlighted text), and then to Background.js which will actually SPEAK the text
