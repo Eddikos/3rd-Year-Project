@@ -105,8 +105,10 @@ function (request, sender, sendResponse) {
     // If clicked on the element in the Test Results sections scroll to that element to make it easier to find
     if (request.action == 'scrollToElement'){
         $('html, body').animate({
-            scrollTop: $('.elementHighlightIndex' + request.elementIndex).offset().top
+            scrollTop: $('.elementHighlightIndex' + request.elementIndex).offset().top - 100
         }, 1000);
+
+        console.log($('.elementHighlightIndex' + request.elementIndex).offset().top);
     }
 
 
@@ -117,7 +119,7 @@ function (request, sender, sendResponse) {
         // Global variable to count all elements from the FORM
         var i = 0
         
-        // Highlight all existing forms
+        // Highlight all existing form elements
         $('form').each(function(index) {
             $(this).addClass("highlightItems");
         });
@@ -205,6 +207,7 @@ function (request, sender, sendResponse) {
     */
     if (request.action == 'PageImages') {
 
+        var badNames = ["picture of", "image of", "graphic of"];
         // Loop through all images on the website
         $('img').each(function(index) {
             initialVariablesForEachTest($(this), index);
@@ -222,6 +225,13 @@ function (request, sender, sendResponse) {
                 testFailed(testElement, currentElement, "No ALT text has been provided");
             }
 
+            if (testElement.passed == true){
+                for (var i = 0; i < badNames.length; i++){
+                    if (alt.toLowerCase().trim().indexOf(badNames[i].trim()) != -1){
+                        testWarned(testElement, currentElement, "Ambiguous alternative text is provided");
+                    }
+                }
+            }
             // Create and Array of URLs basically :)
             testElements.push(testElement);
         });
@@ -236,7 +246,7 @@ function (request, sender, sendResponse) {
     if (request.action == 'PageLinks') {
 
         // Lists of Bad HTTP Status responses and Ambigious texts
-        var badNames = ["click here!", "click here", "click", "here", "share", "list", "read more", "read", "more", "download", "click for details", "info", "link", "link to", "jump", "jump to", "visit", "watch now", "select"]
+        var badNames = ["click here!", "click here", "click", "here", "share", "list", "read more", "read", "more", "download", "click for details", "info", "link", "link to", "jump", "jump to", "visit", "watch now", "select"];
         var brokenLinks = [401, 403, 404, 410, 500, 12002, 12007, 12029, 12031];
 
         // Loop through all links found on the website, and get the Index of the Link 

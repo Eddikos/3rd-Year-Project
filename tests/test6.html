@@ -19,7 +19,8 @@
 				</table>
 
 				<div class="text-center">
-                    <button type="submit" ng-click="checkResults()" class="btn btn-success">Submit <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button></div>
+                    <button type="submit" ng-if="allowSubmit" class="btn btn-success">Submit <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
+                    <button type="submit" ng-if="!allowSubmit" class="btn btn-success disabled">Submit <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button><br/>
 
                     <div class="alert alert-danger" ng-if="!allowSubmit">
                         <p><span class="glyphicon glyphicon-exclamation-sign"></span> You have to fill all sections in order to submit the results</p>

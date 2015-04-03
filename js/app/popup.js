@@ -34,16 +34,19 @@ myApp.controller("PageController", function ($scope) {
     $scope.selectStar = function(rate) {
         $scope.overStar = rate;
         if (rate == 1){
-            $scope.dude = 0;
+            $scope.starRate = 0;
         } else if (rate == 2){
-            $scope.dude = 33;
+            $scope.starRate = 33;
         } else if (rate == 3){
-            $scope.dude = 67;
+            $scope.starRate = 67;
         } else if (rate == 4){
-            $scope.dude = 100;
+            $scope.starRate = 100;
         }
     }
 
+    $scope.selectCriteria = function(id){
+        j('#score'+id).attr('checked', true);
+    }
 
     // Find active tabs, i.e. tab you are browsing
     chrome.tabs.query({'active': true},
@@ -85,6 +88,9 @@ myApp.controller("PageController", function ($scope) {
                 }
                 if (newVal == 4){
                     $scope.requestTables();
+                }
+                if (newVal == 5){
+                    $scope.checkResults();
                 }
             });
 
