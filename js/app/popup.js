@@ -1,5 +1,25 @@
 ﻿var j = jQuery.noConflict();
 
+myApp.filter('resultsFilter', function () {
+    return function (items) {
+        // Create a new Array
+        var filtered = [];
+        // loop through existing Array
+        for (var i = 0; i < items.length; i++) {
+            if (items[i].passed === false){
+                filtered[0].push(item);
+            } else if (items[i].passed === "warning"){
+                filtered[1].push(item);
+            } else if (items[i].passed === "warning"){
+                filtered[2].push(item);
+            }
+        }
+        // boom, return the Array after iteration's complete
+        return filtered;
+        };
+});
+
+
 myApp.controller("PageController", function ($scope) {
     // Stores data submitted by user on all tests
     $scope.testResults = [{id: 0},
@@ -160,7 +180,10 @@ myApp.controller("PageController", function ($scope) {
                 if(testID){
                     $scope.testResults[testID] = null;
                 } else if (!testID){
-                    $scope.testResults = [];
+                    for (i=0; i<$scope.testResults.length; i++){
+                        $scope.testResults[i].checkScore = null;
+                        $scope.testResults[i].checkSummary = null;
+                    }
                 }
             };
 
@@ -188,16 +211,16 @@ myApp.controller("PageController", function ($scope) {
                         url: 'tests/test1.html',
                         webPage: 'http://www.web2access.org.uk/test/1/',
                         rank: [{
-                            description: "Failure with screen reader - No labels",
+                            description: "Fails all AT access, feedback & timing",
                             value: 0
                         }, {
-                            description: "Failure with screen reader - Bad CAPTCHA",
+                            description: "No TTS access, has CAPTCHA alternative",
                             value: 33
                         }, {
-                            description: "Good CAPTCHA, some missing Labels",
+                            description: "Lacks feedback, but has AT access",
                             value: 67
                         }, {
-                            description: "Labeled Forms, no CAPTCHA",
+                            description: "Easy access, good feedback",
                             value: 100
                         }],
                     }, {
@@ -206,16 +229,16 @@ myApp.controller("PageController", function ($scope) {
                         url: 'tests/test2.html',
                         webPage: 'http://www.web2access.org.uk/test/2/',
                         rank: [{
-                            description: "None ALT text, No option to add",
+                            description: "No alt tags or explanations",
                             value: 0
                         }, {
-                            description: "Inadequate/sparse ALT tag text",
+                            description: "Inappropriate/confusing alt tags ",
                             value: 33
                         }, {
-                            description: "ALT tag text, but lacks clarity",
+                            description: "Adequate alt tags but can lack clarity",
                             value: 67
                         }, {
-                            description: "Acceptable alternative text",
+                            description: "Good alt tags and explanations",
                             value: 100
                         }],
                     }, {
@@ -224,16 +247,16 @@ myApp.controller("PageController", function ($scope) {
                         url: 'tests/test3.html',
                         webPage: 'http://www.web2access.org.uk/test/3/',
                         rank: [{
-                            description: "Non-defined links such as 'click here'",
+                            description: "Meaningless, duplicate & broken links ",
                             value: 0
                         }, {
-                            description: "Non-defined links such as 'click here', but with explanatory title attributes",
+                            description: "Non-defined ‘click here’, duplicates",
                             value: 33
                         }, {
-                            description: "Most links understandable with some duplicates",
+                            description: "No broken/duplicates, some unclear links",
                             value: 67
                         }, {
-                            description: "Links fully appropriate",
+                            description: "Skip nav and clear links throughout",
                             value: 100
                         }],
                     }, {
@@ -245,13 +268,13 @@ myApp.controller("PageController", function ($scope) {
                             description: "Page is unusable.",
                             value: 0
                         }, {
-                            description: "Content accessible.",
+                            description: "Content available but unordered",
                             value: 33
                         }, {
-                            description: "Content and navigation accessible.",
+                            description: "Content ordered / navigation difficult",
                             value: 67
                         }, {
-                            description: "Fully accessible.",
+                            description: "Content and structure retained",
                             value: 100
                         }],
                     }, {
@@ -260,16 +283,16 @@ myApp.controller("PageController", function ($scope) {
                         url: 'tests/test5.html',
                         webPage: 'http://www.web2access.org.uk/test/8/',
                         rank: [{
-                            description: "Layout tables lead to poor access",
+                            description: "Layout using tables / access poor",
                             value: 0
                         }, {
-                            description: "Data tables, if used, have no headings. Layout tables don't impact on screen reader.",
+                            description: "Data tables lack row/col headers",
                             value: 33
                         }, {
-                            description: "Data tables incorrect layout. Navigation with a screen reader possible with effort.",
+                            description: "Some data not associated with headers",
                             value: 67
                         }, {
-                            description: "No Layout Tables, all Data Tables labeled.",
+                            description: "Tables have headers & associated data",
                             value: 100
                         }],
                     }, {

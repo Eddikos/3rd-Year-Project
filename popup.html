@@ -91,7 +91,9 @@
                     <h4 class="text-center">
                         <button type="button" class="btn btn-sm btn-primary leftButton2" disabled="disabled" ng-if=" test.id < 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
                         <button type="button" class="btn btn-sm btn-primary leftButton2" ng-click="back();" ng-if=" test.id > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-                        Test {{test.id + 1}}: <a href="{{test.webPage}}" tooltip-placement="bottom" class="whiteLink" target="_blank" tooltip="Click for more information on {{test.name}}">{{test.name}}</a><br/>
+                        <span ng-if="test.id < tests.length-1">Test {{test.id + 1}}: <a href="{{test.webPage}}" tooltip-placement="bottom" class="whiteLink" target="_blank" tooltip="Click for more information on {{test.name}}">{{test.name}}</a><br/></span>
+                        <span ng-if="test.id == tests.length-1">Tests Summary</span>
+                        
                         <button type="submit" class="btn btn-sm btn-primary rightButton2" ng-click="forward();" ng-if=" test.id < 5 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
                         <button type="button" class="btn btn-sm btn-primary rightButton2" disabled="disabled" ng-if=" test.id > 4 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
                     </h4>
@@ -132,6 +134,7 @@
                             <label for='testSummary'>Why have you chosen this score?</label><br/>
                             <textarea name='summary' class="form-control" rows='2' id='testSummary' ng-model="testResults[test.id].checkSummary"></textarea>
                         </p>
+
                         
                     </form>
 
@@ -141,7 +144,21 @@
 
                     <div ng-if = "test.id != 3">
 
-                        <div class="text-center showHideButton">
+                        <div class="text-center showHideButton well">
+                            <p class="text-center">
+                            <b>
+                                Suggested Mark: 
+                                <span ng-if="testData.suggestedMark == 1" class="label label-danger">{{testData.suggestedMark}}</span>
+                                <span ng-if="testData.suggestedMark == 2" class="label label-warning">{{testData.suggestedMark}}</span>
+                                <span ng-if="testData.suggestedMark == 3" class="label label-default">{{testData.suggestedMark}}</span>
+                                <span ng-if="testData.suggestedMark == 4" class="label label-success">{{testData.suggestedMark}}</span>
+                            </p>
+                            Percentage of Failure: 
+                                <span ng-if="testData.suggestedMark == 1" class="label label-danger">{{testData.failurePercentage}}%</span>
+                                <span ng-if="testData.suggestedMark == 2" class="label label-warning">{{testData.failurePercentage}}%</span>
+                                <span ng-if="testData.suggestedMark == 3" class="label label-default">{{testData.failurePercentage}}%</span>
+                                <span ng-if="testData.suggestedMark == 4" class="label label-success">{{testData.failurePercentage}}%</span>
+                            </b>
                             <button class="btn btn-sm btn-primary" ng-click="testsExamples = !testsExamples">
                                 <span ng-if="testsExamples">Hide Test Results <span class="glyphicon glyphicon-triangle-top"></span></span>
                                 <span ng-if="!testsExamples">Show Test Results <span class="glyphicon glyphicon-triangle-bottom"></span></span>
@@ -158,13 +175,15 @@
                             </div><br/>
                             <ul id="testResultsList">
                                 <li ng-repeat="pageElement in testData.testElements">
+
                                     <div class="imageAltOnHover" ng-mouseenter="highlightImage(pageElement.index, true)" ng-mouseleave="highlightImage(pageElement.index, false)" ng-click="scrollToTheElement(pageElement.index)">
-                                        <span ng-if="!pageElement.passed" class="label label-danger">Element {{pageElement.index + 1}}:</span>
-                                        <span ng-if="pageElement.passed == true" class="label label-success">Element {{pageElement.index + 1}}:</span>
-                                        <span ng-if="pageElement.passed == 'warning'" class="label label-warning">Element {{pageElement.index + 1}}:</span>
+                                        <span ng-if="!pageElement.passed" class="label label-danger"><span class="glyphicon glyphicon-thumbs-down"></span> Element {{pageElement.index + 1}}:</span>
+                                        <span ng-if="pageElement.passed == true" class="label label-success"><span class="glyphicon glyphicon-thumbs-up"></span> Element {{pageElement.index + 1}}:</span>
+                                        <span ng-if="pageElement.passed == 'warning'" class="label label-warning"><span class="glyphicon glyphicon-ban-circle"></span> Element {{pageElement.index + 1}}:</span>
                                     </div>
                                     <ul>
-                                        <li>Passed: <b class="nullAlt">{{pageElement.passed}}</b></li>
+                                        <!--<li>Passed:  <b class="nullAlt">{{pageElement.passed}}</b> -->
+                                        </li>
                                         <li ng-if="pageElement.reason && !pageElement.passed">Reason for Failure: {{pageElement.reason}}</li> 
                                         <li ng-if="pageElement.reason && pageElement.passed == 'warning'">Reason for Warning: {{pageElement.reason}}</li>
 

@@ -45,6 +45,18 @@ function (request, sender, sendResponse) {
         testData.numDefault = numDefault;
         testData.numWarning = numWarning;
         testData.numPassed = numDefault - (numDanger + numWarning);
+        var percentage = (numDanger/numDefault)*100;
+        testData.failurePercentage = Math.round(percentage);
+
+        if(testData.failurePercentage < 25){
+            testData.suggestedMark = 4;
+        } else if (testData.failurePercentage >= 25 && testData.failurePercentage < 50){
+            testData.suggestedMark = 3;
+        } else if (testData.failurePercentage >= 50 && testData.failurePercentage < 75){
+            testData.suggestedMark = 2;
+        } else if (testData.failurePercentage >= 75) {
+            testData.suggestedMark = 1;
+        }
         // Send response back to POPUP.js
         sendResponse(testData);
     }
