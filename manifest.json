@@ -28,7 +28,7 @@
 
 	"background": {
 	    "scripts": [
-	      "background.js"
+	      "js/app/background.js"
 	    ]
 	},
 	"minimum_chrome_version": "18",

@@ -111,7 +111,6 @@ function (request, sender, sendResponse) {
         }
         
         chrome.runtime.sendMessage({toSay: selectedText}, function() {}); 
-        console.log(request.toSay);
     }
 
     // If clicked on the element in the Test Results sections scroll to that element to make it easier to find
@@ -119,8 +118,6 @@ function (request, sender, sendResponse) {
         $('html, body').animate({
             scrollTop: $('.elementHighlightIndex' + request.elementIndex).offset().top - 100
         }, 1000);
-
-        console.log($('.elementHighlightIndex' + request.elementIndex).offset().top);
     }
 
 
@@ -219,7 +216,7 @@ function (request, sender, sendResponse) {
     */
     if (request.action == 'PageImages') {
 
-        var badNames = ["picture of", "image of", "graphic of"];
+        var badNames = ["picture of", "image of", "graphic of", "figure of"];
         // Loop through all images on the website
         $('img').each(function(index) {
             initialVariablesForEachTest($(this), index);

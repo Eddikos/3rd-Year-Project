@@ -1,7 +1,8 @@
-<!-- 
-	If you have some Specific data that you want to be 
-	shown within the test Details:
-	First, add it to the Array of TESTELEMENTS in CONTENT.js
-	Secondly, print it hear:
-		Ex: <li>Passed: <b class="nullAlt">{{pageElement.passed}}</b></li>    
--->   
+			<br/>
+			<div class="text-center">
+				<button type="button" class="btn btn-danger" ng-click="toggleCSS(true)" ng-if="!enableDisable">Disable CSS</button>
+                <button type="button" class="btn btn-success" ng-click="toggleCSS(false)" ng-if="enableDisable">Enable CSS</button>
+			</div><br/>
+			<div class="text-center well">
+                <b>Note:</b> This test is manual. Mark it based on the 
+            </div>

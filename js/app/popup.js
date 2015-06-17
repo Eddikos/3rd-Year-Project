@@ -20,26 +20,35 @@ myApp.filter('resultsFilter', function () {
 });
 
 
-myApp.controller("PageController", function ($scope) {
+myApp.controller("PageController", function ($scope, $http) {
+    
     // Stores data submitted by user on all tests
-    $scope.testResults = [{id: 0},
-                          {id: 1},
-                          {id: 2},
-                          {id: 3},
-                          {id: 4}];  
+    $scope.testResults = [ {id: 0}, {id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}, {id: 7}, {id: 8}, {id: 9}, {id: 10}, {id: 11}, {id: 12}, {id: 13}, {id: 14} ]; 
+
+    // numbers of manual tests
+    $scope.manualTests = [5,12,14];
+
     // A Variable for a Button to toggle (Show/Hide) Test examples 
     $scope.testsExamples = false;
     $scope.allowSubmit = true;
 
+    $http.get("http://office.web2access.org.uk/tests.json").success(function(response) {
+        $scope.tests = response.slice(0, 16);;
+
+        // Default Value for test, to start from Test 1
+        $scope.test = $scope.tests[0];
+    });
+
     // Buttons for Previous/Next test
+    // Note that the Test IDs in DB start from 1, not from 0 as we got used to for normal arrays.
     $scope.back = function() {
-        $scope.test = $scope.tests[$scope.test.id-1];
+        $scope.test = $scope.tests[$scope.test.id-2];
     }
     $scope.forward = function() {
-        $scope.test = $scope.tests[$scope.test.id+1];
+        $scope.test = $scope.tests[$scope.test.id];
     }
     $scope.navigate = function(testId){
-        $scope.test = $scope.tests[testId];
+        $scope.test = $scope.tests[testId-1];
     }
 
     $scope.rate = 3;
@@ -88,8 +97,25 @@ myApp.controller("PageController", function ($scope) {
                 $scope.testsExamples = false;
                 $scope.selected = false;
                 $scope.allowSubmit = true;
-                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageCSS', 'disable': false }, function (response) { });
 
+                // When the test has been switched, return the CSS back to normal, for test 5.
+                chrome.tabs.sendMessage(tabs[0].id, { 'action': 'PageCSS', 'disable': false }, function (response) { });
+                $scope.enableDisable = false;
+
+                // change the url of the test, which links to corrensponding HTML file on the Tests folder.
+                $scope.testUrl = 'tests/test'+newVal+'.html';
+
+                // Change the URL if test is manual
+                for (i = 0; i <= $scope.manualTests.length; i++){
+                    if (newVal == $scope.manualTests[i]){
+                        $scope.manualUrl = 'tests/test'+newVal+'.html';
+                        $scope.manualTest = true;
+                    } else {
+                        $scope.manualTest = false;
+                    }
+                }
+
+                // 
                 if($scope.testResults[newVal] && $scope.testResults[newVal].checkScore){
                     $scope.rate = 1 + Math.floor($scope.testResults[newVal].checkScore / 33);
                 } else {
@@ -97,19 +123,19 @@ myApp.controller("PageController", function ($scope) {
                     $scope.overStar = 1;
                 }
 
-                if (newVal == 0){
+                if (newVal == 1){
                     $scope.requestForms();
                 }
-                if (newVal == 1){
+                if (newVal == 2){
                     $scope.requestImages();
                 }
-                if (newVal == 2){
+                if (newVal == 3){
                     $scope.requestLinks();
                 }
-                if (newVal == 4){
+                if (newVal == 8){
                     $scope.requestTables();
                 }
-                if (newVal == 5){
+                if (newVal == 16){
                     $scope.checkResults();
                 }
             });
@@ -203,120 +229,6 @@ myApp.controller("PageController", function ($scope) {
             }
         }
     });
-
-
-    $scope.tests = [{
-                        id: 0,
-                        name: 'Login, Signup and Other Forms Accessible',
-                        url: 'tests/test1.html',
-                        webPage: 'http://www.web2access.org.uk/test/1/',
-                        rank: [{
-                            description: "Fails all AT access, feedback & timing",
-                            value: 0
-                        }, {
-                            description: "No TTS access, has CAPTCHA alternative",
-                            value: 33
-                        }, {
-                            description: "Lacks feedback, but has AT access",
-                            value: 67
-                        }, {
-                            description: "Easy access, good feedback",
-                            value: 100
-                        }],
-                    }, {
-                        id: 1,
-                        name: 'Image ALT Attributes',
-                        url: 'tests/test2.html',
-                        webPage: 'http://www.web2access.org.uk/test/2/',
-                        rank: [{
-                            description: "No alt tags or explanations",
-                            value: 0
-                        }, {
-                            description: "Inappropriate/confusing alt tags ",
-                            value: 33
-                        }, {
-                            description: "Adequate alt tags but can lack clarity",
-                            value: 67
-                        }, {
-                            description: "Good alt tags and explanations",
-                            value: 100
-                        }],
-                    }, {
-                        id: 2,
-                        name: 'Link Target Definitions',
-                        url: 'tests/test3.html',
-                        webPage: 'http://www.web2access.org.uk/test/3/',
-                        rank: [{
-                            description: "Meaningless, duplicate & broken links ",
-                            value: 0
-                        }, {
-                            description: "Non-defined ‘click here’, duplicates",
-                            value: 33
-                        }, {
-                            description: "No broken/duplicates, some unclear links",
-                            value: 67
-                        }, {
-                            description: "Skip nav and clear links throughout",
-                            value: 100
-                        }],
-                    }, {
-                        id: 3,
-                        name: 'Removal of Stylesheet',
-                        url: 'tests/test4.html',
-                        webPage: 'http://www.web2access.org.uk/test/5/',
-                        rank: [{
-                            description: "Page is unusable.",
-                            value: 0
-                        }, {
-                            description: "Content available but unordered",
-                            value: 33
-                        }, {
-                            description: "Content ordered / navigation difficult",
-                            value: 67
-                        }, {
-                            description: "Content and structure retained",
-                            value: 100
-                        }],
-                    }, {
-                        id: 4,
-                        name: 'Appropriate use of Tables',
-                        url: 'tests/test5.html',
-                        webPage: 'http://www.web2access.org.uk/test/8/',
-                        rank: [{
-                            description: "Layout using tables / access poor",
-                            value: 0
-                        }, {
-                            description: "Data tables lack row/col headers",
-                            value: 33
-                        }, {
-                            description: "Some data not associated with headers",
-                            value: 67
-                        }, {
-                            description: "Tables have headers & associated data",
-                            value: 100
-                        }],
-                    }, {
-                        id: 5,
-                        name: 'Summary of Tests',
-                        url: 'tests/test6.html',
-                        webPage: 'http://www.web2access.org.uk/',
-                        rank: [{
-                            description: "Layout tables lead to poor access",
-                            value: 0
-                        }, {
-                            description: "Data tables, if used, have no headings. Layout tables don't impact on screen reader.",
-                            value: 33
-                        }, {
-                            description: "Data tables incorrect layout. Navigation with a screen reader possible with effort.",
-                            value: 67
-                        }, {
-                            description: "No Layout Tables, all Data Tables labeled.",
-                            value: 100
-                        }],
-                    }];
-
-    // Default Value for test, to start from Test 1
-    $scope.test = $scope.tests[0];
 });
 
 

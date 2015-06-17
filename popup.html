@@ -24,9 +24,9 @@
                         <h4 class="text-center">
                             <button type="button" class="btn btn-sm btn-primary leftButton" disabled="disabled" ng-if=" test.id < 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
                             <button type="button" class="btn btn-sm btn-primary leftButton" ng-click="back();" ng-if=" test.id > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-                            Test {{test.id + 1}}: <a href="{{test.webPage}}" tooltip-placement="bottom" target="_blank" tooltip="Click for more information on {{test.name}}">{{test.name}}</a>
-                            <button type="submit" class="btn btn-sm btn-primary rightButton" ng-click="forward();" ng-if=" test.id < 4 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-                            <button type="button" class="btn btn-sm btn-primary rightButton" disabled="disabled" ng-if=" test.id > 3 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                            Test {{test.id}}: <a href="http://www.web2access.org.uk/test/{{test.id}}/" tooltip-placement="bottom" target="_blank" tooltip="Click for more information on {{test.name}}">{{test.name}}</a>
+                            <button type="submit" class="btn btn-sm btn-primary rightButton" ng-click="forward();" ng-if=" test.id < tests.length "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                            <button type="button" class="btn btn-sm btn-primary rightButton" disabled="disabled" ng-if=" test.id > tests.length - 1 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
                         </h4>
 
                         <div class="miniRanking">
@@ -45,20 +45,22 @@
                         </table>
                     </div>
 
-                    <!-- <p class="text-center"><b>Page URL</b>: <a href="{{parser.host}}">{{parser.host}}</a></p> -->
+                    <!-- 
+                        <p class="text-center"><b>Page URL</b>: <a href="{{parser.host}}">{{parser.host}}</a></p>
+                        <ul>
+                            <li>href = {{parser.href}}</li>
+                            <li>protocol = {{parser.protocol}}</li>
+                            <li>host = {{parser.host}}</li>
+                            <li>hostname = {{parser.hostname}}</li>
+                            <li>port = {{parser.port}}</li>
+                            <li>pathname = {{parser.pathname}}</li>
+                        </ul> 
+                    -->
 
-                    <!-- <ul>
-                        <li>href = {{parser.href}}</li>
-                        <li>protocol = {{parser.protocol}}</li>
-                        <li>host = {{parser.host}}</li>
-                        <li>hostname = {{parser.hostname}}</li>
-                        <li>port = {{parser.port}}</li>
-                        <li>pathname = {{parser.pathname}}</li>
-                    </ul> -->
-                    <a href="http://www.web2access.org.uk/" tooltip-placement="bottom" class="whiteLink" target="_blank" tooltip="Link to the main Web2Access website"><span class="web2access whiteLink" ><img src="img/Untitled.png"/> Web2Access</span></a>
+                    
 
                     <div class="web2accessP text-right">
-                        <span class="web2access whiteLink" ><img src="img/Untitled.png"/> Web2Access</span>
+                        <a href="http://www.web2access.org.uk/" tooltip-placement="bottom" class="whiteLink" target="_blank" tooltip="Link to the main Web2Access website"><span class="web2access whiteLink" ><img src="img/Untitled.png"/> Web2Access</span></a>
                         <div class="btn-group text-right" dropdown is-open="status.isopen">
                             <button type="button" class="btn btn-sm btn-danger dropdown-toggle" dropdown-toggle ng-disabled="disabled">
                                 Reset <span class="caret"></span>
@@ -73,36 +75,40 @@
                     
                     <hr class="web2accessHr"/>
                 <!--Test Progress Bar, idea taken from http://designscrazed.org/jquery-css3-progress-bars/-->
+
                     <div class="progressH">
                         <div ng-repeat="testItem in tests" style="display: inline-block">
                             <div ng-if="testItem.id == test.id" class="circle active">
-                                <span class="label" ng-if="testItem.id != tests.length-1" ng-click="navigate(testItem.id)">{{testItem.id + 1}}</span>
-                                <span class="label" ng-if="testItem.id == tests.length-1" tooltip-placement="bottom" tooltip="View the marks summary and submit" ng-click="navigate(testItem.id)"><span class="submitIcon glyphicon glyphicon-send" aria-hidden="true"></span></span>
+                                <span class="navItem" ng-if="testItem.id != tests.length" ng-click="navigate(testItem.id)">{{testItem.id}}</span>
+
+                                <span class="navItem" ng-if="testItem.id == tests.length" tooltip-placement="bottom" tooltip="View the marks summary and submit" ng-click="navigate(testItem.id)"><span class="submitIcon glyphicon glyphicon-send" aria-hidden="true"></span></span>
                             </div>
                             <div ng-if="testItem.id != test.id" class="circle done">
-                                <span class="label" ng-if="testItem.id != tests.length-1" ng-click="navigate(testItem.id)">{{testItem.id + 1}}</span>
-                                <span class="label" ng-if="testItem.id == tests.length-1" tooltip-placement="bottom" tooltip="View the marks summary and submit" ng-click="navigate(testItem.id)"><span class="submitIcon glyphicon glyphicon-send" aria-hidden="true"></span></span>
+                                <span class="navItem" ng-if="testItem.id != tests.length" ng-click="navigate(testItem.id)">{{testItem.id}}</span>
+                                <span class="navItem" ng-if="testItem.id == tests.length" tooltip-placement="bottom" tooltip="View the marks summary and submit" ng-click="navigate(testItem.id)"><span class="submitIcon glyphicon glyphicon-send" aria-hidden="true"></span></span>
                             </div>
-                            <span ng-if="testItem.id != tests.length-1" class="bar done"></span>
+
+                            <span ng-if="testItem.id != tests.length" class="navBar"></span>
                         </div>
                     </div>
+
                 <!--End of Test Progess Bar-->
 
                     <h4 class="text-center">
                         <button type="button" class="btn btn-sm btn-primary leftButton2" disabled="disabled" ng-if=" test.id < 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
                         <button type="button" class="btn btn-sm btn-primary leftButton2" ng-click="back();" ng-if=" test.id > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-                        <span ng-if="test.id < tests.length-1">Test {{test.id + 1}}: <a href="{{test.webPage}}" tooltip-placement="bottom" class="whiteLink" target="_blank" tooltip="Click for more information on {{test.name}}">{{test.name}}</a><br/></span>
-                        <span ng-if="test.id == tests.length-1">Tests Summary</span>
+                        <span ng-if="test.id < tests.length">Test {{test.id}}: <a href="http://www.web2access.org.uk/test/{{test.id}}/" tooltip-placement="bottom" class="whiteLink" target="_blank" tooltip="Click for more information on {{test.name}}">{{test.name}}</a><br/></span>
+                        <span ng-if="test.id == tests.length">Tests Summary</span>
                         
-                        <button type="submit" class="btn btn-sm btn-primary rightButton2" ng-click="forward();" ng-if=" test.id < 5 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-                        <button type="button" class="btn btn-sm btn-primary rightButton2" disabled="disabled" ng-if=" test.id > 4 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                        <button type="submit" class="btn btn-sm btn-primary rightButton2" ng-click="forward();" ng-if=" test.id < tests.length "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-sm btn-primary rightButton2" disabled="disabled" ng-if=" test.id > tests.length - 1 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
                     </h4>
                     
-                <div ng-if = "test.id == 5">
-                    <div ng-include="test.url"></div>
+                <div ng-if = "test.id == 16">
+                    <div ng-include="'tests/test16.html'"></div>
                 </div>
 
-                <div ng-if = "test.id != 5">
+                <div ng-if = "test.id != 16">
 
                     <form name="myForm" class="well">
                         
@@ -111,22 +117,22 @@
                             <tr class='odd'>
                                 <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='0' id='score0' ng-change="selected()"/></td>
                                 <td scope='row'><img class="rankStars" src='img/star1.png' alt='Poor' /></td>
-                                <td><label for='score0'>{{test.rank[0].description}}</label></td>
+                                <td><label for='score0'>{{test.criteria0}}</label></td>
                             </tr>
                             <tr class='even'>
                                 <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='33' id='score33' ng-change="selected()"/></td>
                                 <td scope='row'><img class="rankStars" src='img/star2.png' alt='Fair' /></td>
-                                <td><label for='score33'>{{test.rank[1].description}}</label></td>
+                                <td><label for='score33'>{{test.criteria1}}</label></td>
                             </tr>
                             <tr class='odd'>
                                 <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='67' id='score67' ng-change="selected()"/></td>
                                 <td scope='row'><img class="rankStars" src='img/star3.png' alt='Good' /></td>
-                                <td><label for='score67'>{{test.rank[2].description}}</label></td>
+                                <td><label for='score67'>{{test.criteria2}}</label></td>
                             </tr>
                             <tr class='even'>
                                 <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='100' id='score100' ng-change="selected()"/></td>
                                 <td scope='row'><img class="rankStars" src='img/star4.png' alt='Excellent' /></td>
-                                <td><label for='score100'>{{test.rank[3].description}}</label></td>
+                                <td><label for='score100'>{{test.criteria3}}</label></td>
                             </tr>
                         </table>
                         <input type='hidden' name='test' ng-model="testNumber" value='{{test.id}}' />
@@ -135,14 +141,13 @@
                             <textarea name='summary' class="form-control" rows='2' id='testSummary' ng-model="testResults[test.id].checkSummary"></textarea>
                         </p>
 
-                        
                     </form>
 
-                    <div ng-if = "test.id == 3">
-                        <div ng-include="test.url"></div>
+                    <div ng-if="manualTest == true">
+                        <div ng-include="manualUrl"></div>
                     </div>
 
-                    <div ng-if = "test.id != 3">
+                    <div ng-if="manualTest == false">
 
                         <div class="text-center showHideButton well">
                             <p class="text-center">
@@ -153,7 +158,7 @@
                                 <span ng-if="testData.suggestedMark == 3" class="label label-default">{{testData.suggestedMark}}</span>
                                 <span ng-if="testData.suggestedMark == 4" class="label label-success">{{testData.suggestedMark}}</span>
                             </p>
-                            Percentage of Failure: 
+                                Percentage of Failure: 
                                 <span ng-if="testData.suggestedMark == 1" class="label label-danger">{{testData.failurePercentage}}%</span>
                                 <span ng-if="testData.suggestedMark == 2" class="label label-warning">{{testData.failurePercentage}}%</span>
                                 <span ng-if="testData.suggestedMark == 3" class="label label-default">{{testData.failurePercentage}}%</span>
@@ -188,7 +193,7 @@
                                         <li ng-if="pageElement.reason && pageElement.passed == 'warning'">Reason for Warning: {{pageElement.reason}}</li>
 
                                         <!--Output a Test specific data apart from the ones mentioned below-->
-                                        <div ng-include="test.url"></div>
+                                        <div ng-include="testUrl"></div>
                                         <!--End************************************************************-->
 
                                     </ul>
