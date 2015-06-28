@@ -62,7 +62,7 @@ function (request, sender, sendResponse) {
     }
 
     // Clear everything before moving to another Test
-    if(request && request.action != 'HighlightImage' && request.action != 'scrollToElement'){
+    if(request && request.action != 'HighlightImage' && request.action != 'scrollToElement' && request.action != 'SaveResults'){
         // Remove all CSS classes for each test to start from scratch
         $('.highlightItems').removeClass('highlightItems');
         $('.testDanger').removeClass('testDanger');
@@ -348,9 +348,45 @@ function (request, sender, sendResponse) {
         sendResponseToPopUp();
     }
 
-    
+
     /*  
-        Test Number 4
+        Test Number 4: Frame Titles and Layout
+    */
+    if (request.action == 'PageFrames') {
+
+        // Loop through all frames on the website
+        $('frame').each(function(index) {
+            initialVariablesForEachTest($(this), index);
+            // Store Image's Alt text and it's index (number) on the page
+            var title = $(this).attr('title');
+            testElement.title = title;
+            
+
+            if (title != null) {
+                if (alt.trim() == ""){
+                    testElement.title = " ";
+                    testFailed(testElement, currentElement, "An empty Title text is being provided");
+                }
+            } else {
+                testFailed(testElement, currentElement, "No Title text has been provided");
+            }
+
+            // Create and Array of URLs basically :)
+            testElements.push(testElement);
+        });
+
+        $('iframes').each(function(index) {
+            initialVariablesForEachTest($(this), index);
+            // Create and Array of URLs basically :)
+            testElements.push(testElement);
+        });
+
+        sendResponseToPopUp();
+    }
+
+
+    /*  
+        Test Number 5
         performed by simply Disabling/Enabling all "LINK" tags from the webpageusing jQuery.
         "link" tags are used to include External or Internal CSS onto a webpage
         in the similar manner that "script" allows to include JavaScript files/code
@@ -358,6 +394,7 @@ function (request, sender, sendResponse) {
     if (request.action == 'PageCSS') {
         if (request.disable){
             $('link[rel="stylesheet"]').attr('disabled', 'disabled');
+            sendResponse("SOMETHING");
         }
         if (!request.disable){
             $('link[rel="stylesheet"]').removeAttr('disabled');
@@ -366,7 +403,7 @@ function (request, sender, sendResponse) {
 
 
     /*  
-        Test Number 5
+        Test Number 8
     */
     if (request.action == 'PageTables') {
 
@@ -399,12 +436,60 @@ function (request, sender, sendResponse) {
         
         sendResponseToPopUp();
     }
+
+    /*  
+        Test Number 9
+    */
+    if (request.action == 'PageOrder') {
+        if (request.disable){
+            $('body *:not(script, style, noscript)').each(function(index) {
+                $(this).addClass("testSuccess elementHighlightIndex"+ index); 
+            });
+        }
+        if (!request.disable){
+            $('.testSuccess').removeClass('testSuccess');
+            $('body *:not(script, style, noscript)').each(function(index) {
+                $(this).removeClass("elementHighlightIndex"+ index); 
+            });
+        }
+    }
+
+
+    /*
+        Store Test Results provided by the user
+        Performed using Google Storage APIs, which will store the global variable 
+        with all the data regarding that webpage and the user's test results
+    */
+    response = 0;
+    if (request.action == 'CheckForResults') {
+        chrome.storage.sync.get("testResults", function(data) {
+            if (data.testResults) {
+                response = data;
+                console.log("Already Existing Data: ", response);
+            } else {
+                response = false;
+            }
+        });
+        sendResponse(response);
+        
+        // if (typeof response != 'undefined'){
+        //     console.log("yes, I've sent the response: " + response);
+        //     sendResponse(response);
+        // }
+
+    }
+
+    if (request.action == 'SaveResults') {
+        chrome.storage.sync.set({'testResults': request.testResults}, function() {
+            chrome.storage.sync.get("testResults", function(data) {
+                console.log("Saving Data: ", data.testResults);
+            });
+        });
+    }
+
+
+    if (request.action == 'DeleteResults') {
+        console.log("Cleared");
+        chrome.storage.sync.clear();﻿
+    }
 });
-
-// Storing the data in Chrome.Storage.Sync
-
-// chrome.storage.sync.set({'value': imgCount}, function() {
-//     chrome.storage.sync.get("value", function(data) {
-//         console.log("data", data.value);
-//     });
-// });

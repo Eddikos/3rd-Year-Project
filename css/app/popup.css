@@ -148,6 +148,9 @@ textarea {
 #testResultsList > li{
   list-style-type: none;
 }
+#mainForm{
+  margin-top: 15px;
+}
 
 /*Checkout progressH Bar ***********************/
 
@@ -202,7 +205,7 @@ textarea {
   background-color: #0c95be;
 }
 .default{
-  background-color: #fff;
+  background-color: red;
 }
 .done{
   background-color: #8bc435;

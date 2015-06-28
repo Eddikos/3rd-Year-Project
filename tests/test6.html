@@ -1,30 +1,7 @@
-			<div class="well">
-				<table class="table table-hover">
-					<thead>
-						<tr>
-							<th></th>
-							<th>Score</th>
-							<th>Comments</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr ng-repeat="testResult in testResults">
-							<th>Test {{testResult.id + 1}}: </th>
-							<td ng-if="testResult.checkScore"><img class="tickCross img-circle" src='img/tick.png' alt='Tick, i.e. given' /></td>
-							<td ng-if="!testResult.checkScore"><img class="tickCross img-circle" src='img/cross.png' alt='Cross, i.e. not given'/></td>
-							<td ng-if="testResult.checkSummary"><img class="tickCross img-circle" src='img/tick.png' alt='Tick, i.e. given' /></td>
-							<td ng-if="!testResult.checkSummary"><img class="tickCross img-circle" src='img/cross.png' alt='Cross, i.e. not given'/></td>
-						</tr>
-					</tbody>
-				</table>
-
-				<div class="text-center">
-                    <button type="submit" ng-if="allowSubmit" class="btn btn-success">Submit <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
-                    <button type="submit" ng-if="!allowSubmit" class="btn btn-success disabled">Submit <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button><br/><br/>
-
-                    <div class="alert alert-danger submissionMessage" ng-if="!allowSubmit">
-                        <p><span class="glyphicon glyphicon-exclamation-sign"></span> You have to fill all sections in order to submit the results</p>
-                    </div>
-                </div>
-
-			</div>
+<!-- 
+	If you have some Specific data that you want to be 
+	shown within the test Details:
+	First, add it to the Array of TESTELEMENTS in CONTENT.js
+	Secondly, print it hear:
+		Ex: <li>Passed: <b class="nullAlt">{{pageElement.passed}}</b></li>    
+-->   

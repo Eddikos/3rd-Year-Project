@@ -1,0 +1,36 @@
+			<div class="well">
+				<p>
+	                <label for='websiteSummary'>Please add any general comments about the ease of use and accessibility of this product *:</label><br/>
+	                <textarea name='websiteSummary' class="form-control" rows='2' id='websiteSummary' ng-change="saveSummary(websiteSummary)" ng-model="websiteSummary"></textarea>
+	            </p>
+	            {{websiteSummary}}
+			</div><br/>
+			<div class="well">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th></th>
+							<th>Score</th>
+							<th>Comments</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="testResult in testResults">
+							<th><a href="" ng-click="navigate(testResult.id)" tooltip-placement="right" tooltip='{{tests[testResult.id].name}}' >Test {{testResult.id}}: </a></th>
+							<td ng-if="testResult.checkScore || testResult.checkScore == 0"><img class="tickCross img-circle" src='img/tick.png' alt='Tick, i.e. given' tooltip-placement="bottom" tooltip='Score: {{testResult.checkScore}} / 100'/></td>
+							<td ng-if="!testResult.checkScore"><img class="tickCross img-circle" src='img/cross.png' alt='Cross, i.e. not given' tooltip-placement="bottom" tooltip='Not specified yet'/></td>
+							<td ng-if="testResult.checkSummary"><img class="tickCross img-circle" src='img/tick.png' alt='Tick, i.e. given' tooltip-placement="bottom" tooltip='Comment: "{{testResult.checkSummary}}"' /></td>
+							<td ng-if="!testResult.checkSummary"><img class="tickCross img-circle" src='img/cross.png' alt='Cross, i.e. not given' tooltip-placement="bottom" tooltip='Not specified yet'/></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="text-center">
+                    <button type="submit" ng-if="allowSubmit" class="btn btn-success">Submit <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button>
+                    <button type="submit" ng-if="!allowSubmit" class="btn btn-success disabled">Submit <span class="glyphicon glyphicon-send" aria-hidden="true"></span></button><br/><br/>
+
+                    <div class="alert alert-danger submissionMessage" ng-if="!allowSubmit">
+                        <p><span class="glyphicon glyphicon-exclamation-sign"></span> You have to fill all sections in order to submit the results</p>
+                    </div>
+                </div>
+			</div>

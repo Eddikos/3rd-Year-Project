@@ -20,33 +20,33 @@
             <div ng-controller="PageController">
 
                     <div id="nav_stick">
-                        
-                        <h4 class="text-center">
-                            <button type="button" class="btn btn-sm btn-primary leftButton" disabled="disabled" ng-if=" test.id < 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-                            <button type="button" class="btn btn-sm btn-primary leftButton" ng-click="back();" ng-if=" test.id > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-                            Test {{test.id}}: <a href="http://www.web2access.org.uk/test/{{test.id}}/" tooltip-placement="bottom" target="_blank" tooltip="Click for more information on {{test.name}}">{{test.name}}</a>
-                            <button type="submit" class="btn btn-sm btn-primary rightButton" ng-click="forward();" ng-if=" test.id < tests.length "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-                            <button type="button" class="btn btn-sm btn-primary rightButton" disabled="disabled" ng-if=" test.id > tests.length - 1 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
-                        </h4>
+                        <span ng-if="test.id < tests.length">
+                            <h4 class="text-center">
+                                <button type="button" class="btn btn-sm btn-primary leftButton" disabled="disabled" ng-if=" test.id < 2 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                                <button type="button" class="btn btn-sm btn-primary leftButton" ng-click="back();" ng-if=" test.id > 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                                Test {{test.id}}: <a href="http://www.web2access.org.uk/test/{{test.id}}/" tooltip-placement="bottom" class="whiteLink" target="_blank" tooltip="Click for more information on '{{test.name}}' test">{{test.name}}</a><br/>
+                                
+                                <button type="submit" class="btn btn-sm btn-primary rightButton" ng-click="forward();" ng-if=" test.id < tests.length "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                                <button type="button" class="btn btn-sm btn-primary rightButton" disabled="disabled" ng-if=" test.id > tests.length - 1 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
+                            </h4>
 
-                        <div class="miniRanking">
+                            <div class="miniRanking">
+                                <rating ng-model="rate" max="max" id="stars" readonly="isReadonly" ng-click="selectStar(rate); testResults[test.id].checkScore = dude" on-hover="hoveringOver(value)" > </rating> <b>{{test.rank[overStar-1].description}}</b>
+                            </div>
 
-                            <rating ng-model="rate" max="max" id="stars" readonly="isReadonly" ng-click="selectStar(rate); testResults[test.id].checkScore = dude" on-hover="hoveringOver(value)" > </rating> <b>{{test.rank[overStar-1].description}}</b>
-
-                        </div>
-
-                        <button class="btn btn-sm btn-danger" ng-click="rate = 0; reset(test.id);" id="rankClear" ><span class="glyphicon glyphicon-trash"></span></button>
-                        
-                        <table style="width:100%">
-                            <tr>
-                                <td><label for='testSummary' class="control-label">Why?:</label></td>
-                                <td><input type="text" name='summary' class="form-control" id='testSummary' placeholder="Enter your comments here..." ng-model="testResults[test.id].checkSummary" ng-required="true" required></input></td>
-                            </tr>
-                        </table>
+                            <button class="btn btn-sm btn-danger" ng-click="rate = 0; reset(test.id);" id="rankClear" ><span class="glyphicon glyphicon-trash"></span></button>
+                            
+                            <table style="width:100%">
+                                <tr>
+                                    <td><label for='testSummary' class="control-label">Why?:</label></td>
+                                    <td><input type="text" name='summary' class="form-control" id='testSummary' placeholder="Enter your comments here..." ng-model="testResults[test.id].checkSummary" ng-required="true" required></input></td>
+                                </tr>
+                            </table>
+                        </span>
                     </div>
 
-                    <!-- 
-                        <p class="text-center"><b>Page URL</b>: <a href="{{parser.host}}">{{parser.host}}</a></p>
+                    
+                        <!-- <p class="text-center"><b>Page URL</b>: <a href="http://{{parser.host}}" target="_blank">{{parser.host}}</a></p>
                         <ul>
                             <li>href = {{parser.href}}</li>
                             <li>protocol = {{parser.protocol}}</li>
@@ -54,13 +54,12 @@
                             <li>hostname = {{parser.hostname}}</li>
                             <li>port = {{parser.port}}</li>
                             <li>pathname = {{parser.pathname}}</li>
-                        </ul> 
-                    -->
-
-                    
+                        </ul>  -->
+        
 
                     <div class="web2accessP text-right">
-                        <a href="http://www.web2access.org.uk/" tooltip-placement="bottom" class="whiteLink" target="_blank" tooltip="Link to the main Web2Access website"><span class="web2access whiteLink" ><img src="img/Untitled.png"/> Web2Access</span></a>
+                        <a href="http://www.web2access.org.uk/" tooltip-placement="right" class="whiteLink web2access" target="_blank" tooltip="Link to the main Web2Access website"><img src="img/Untitled.png"/> Web2Access</a>
+
                         <div class="btn-group text-right" dropdown is-open="status.isopen">
                             <button type="button" class="btn btn-sm btn-danger dropdown-toggle" dropdown-toggle ng-disabled="disabled">
                                 Reset <span class="caret"></span>
@@ -70,17 +69,16 @@
                                 <li><a href="#" ng-click="reset(false);">Reset all Tests</a></li>
                             </ul>
                         </div>
+
                         <button type="button" class="btn btn-sm btn-primary" ng-click="ttsGoogle()" tooltip-placement="bottom" tooltip="Text To Speech converter. First select a text within the webpage"><span class="glyphicon glyphicon-volume-up"></span></button>
                     </div>
                     
                     <hr class="web2accessHr"/>
-                <!--Test Progress Bar, idea taken from http://designscrazed.org/jquery-css3-progress-bars/-->
 
                     <div class="progressH">
                         <div ng-repeat="testItem in tests" style="display: inline-block">
                             <div ng-if="testItem.id == test.id" class="circle active">
                                 <span class="navItem" ng-if="testItem.id != tests.length" ng-click="navigate(testItem.id)">{{testItem.id}}</span>
-
                                 <span class="navItem" ng-if="testItem.id == tests.length" tooltip-placement="bottom" tooltip="View the marks summary and submit" ng-click="navigate(testItem.id)"><span class="submitIcon glyphicon glyphicon-send" aria-hidden="true"></span></span>
                             </div>
                             <div ng-if="testItem.id != test.id" class="circle done">
@@ -95,59 +93,79 @@
                 <!--End of Test Progess Bar-->
 
                     <h4 class="text-center">
-                        <button type="button" class="btn btn-sm btn-primary leftButton2" disabled="disabled" ng-if=" test.id < 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-                        <button type="button" class="btn btn-sm btn-primary leftButton2" ng-click="back();" ng-if=" test.id > 0 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
-                        <span ng-if="test.id < tests.length">Test {{test.id}}: <a href="http://www.web2access.org.uk/test/{{test.id}}/" tooltip-placement="bottom" class="whiteLink" target="_blank" tooltip="Click for more information on {{test.name}}">{{test.name}}</a><br/></span>
+                        <button type="button" class="btn btn-sm btn-primary leftButton2" disabled="disabled" ng-if=" test.id < 2 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                        <button type="button" class="btn btn-sm btn-primary leftButton2" ng-click="back();" ng-if=" test.id > 1 "><span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span></button>
+                        <span ng-if="test.id < tests.length">Test {{test.id}}: <a href="http://www.web2access.org.uk/test/{{test.id}}/" tooltip-placement="bottom" class="whiteLink" target="_blank" tooltip="Click for more information on '{{test.name}}' test">{{test.name}}</a><br/></span>
                         <span ng-if="test.id == tests.length">Tests Summary</span>
                         
                         <button type="submit" class="btn btn-sm btn-primary rightButton2" ng-click="forward();" ng-if=" test.id < tests.length "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
                         <button type="button" class="btn btn-sm btn-primary rightButton2" disabled="disabled" ng-if=" test.id > tests.length - 1 "><span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span></button>
                     </h4>
+
+                <div ng-if="testNotFinished" class = "alert alert-danger text-justify">
+                    <p> 
+                        <span class="glyphicon glyphicon-exclamation-sign"></span>
+                        You still have some unfinished/not submitted test results from website: balblabla... Would you like to continue the test or to reset the tests?
+                    </p> 
+                    <p class="text-center">   
+                        <button type="button" class="btn btn-success" ng-click="continueTests()" ng-if="!enableDisable">Continue</button> OR
+                        <button type="button" class="btn btn-danger" ng-click="reset()" ng-if="!enableDisable">Reset Tests</button> 
+                    </p>
+                </div>
                     
-                <div ng-if = "test.id == 16">
-                    <div ng-include="'tests/test16.html'"></div>
+                <div ng-if = "test.id == tests.length">
+                    <div ng-include="'tests/summary.html'"></div>
                 </div>
 
-                <div ng-if = "test.id != 16">
+                <div ng-if = "test.id != tests.length">
 
-                    <form name="myForm" class="well">
+                    <form name="myForm" class="well" id="mainForm">
                         
 
                         <table class='fullWidth table table-hover'>
                             <tr class='odd'>
-                                <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='0' id='score0' ng-change="selected()"/></td>
+                                <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id-1].checkScore" value='0' id='score0' ng-change="selected()"/></td>
                                 <td scope='row'><img class="rankStars" src='img/star1.png' alt='Poor' /></td>
                                 <td><label for='score0'>{{test.criteria0}}</label></td>
                             </tr>
                             <tr class='even'>
-                                <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='33' id='score33' ng-change="selected()"/></td>
+                                <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id-1].checkScore" value='33' id='score33' ng-change="selected()"/></td>
                                 <td scope='row'><img class="rankStars" src='img/star2.png' alt='Fair' /></td>
                                 <td><label for='score33'>{{test.criteria1}}</label></td>
                             </tr>
                             <tr class='odd'>
-                                <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='67' id='score67' ng-change="selected()"/></td>
+                                <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id-1].checkScore" value='67' id='score67' ng-change="selected()"/></td>
                                 <td scope='row'><img class="rankStars" src='img/star3.png' alt='Good' /></td>
                                 <td><label for='score67'>{{test.criteria2}}</label></td>
                             </tr>
                             <tr class='even'>
-                                <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id].checkScore" value='100' id='score100' ng-change="selected()"/></td>
+                                <td style='text-align: center'><input type='radio' name='score' ng-model="testResults[test.id-1].checkScore" value='100' id='score100' ng-change="selected()"/></td>
                                 <td scope='row'><img class="rankStars" src='img/star4.png' alt='Excellent' /></td>
                                 <td><label for='score100'>{{test.criteria3}}</label></td>
                             </tr>
                         </table>
-                        <input type='hidden' name='test' ng-model="testNumber" value='{{test.id}}' />
+                        <input type='hidden' name='test' ng-model="testNumber" value='{{test.id-1}}' />
                         <p>
                             <label for='testSummary'>Why have you chosen this score?</label><br/>
-                            <textarea name='summary' class="form-control" rows='2' id='testSummary' ng-model="testResults[test.id].checkSummary"></textarea>
+                            <textarea name='summary' class="form-control" rows='2' id='testSummary' ng-model="testResults[test.id-1].checkSummary"></textarea>
                         </p>
 
                     </form>
 
-                    <div ng-if="manualTest == true">
+
+                    <div ng-if="testItem.id != test.id-1 && (testResults[test.id-1].checkScore == null || testResults[test.id-1].checkSummary == null || testResults[test.id-1].checkSummary == '')" class="circle default">
+                        Not Yet Completed
+                    </div>
+
+                    <div ng-if="warningMessage" class="circle default">
+                        You Haven't yet complited all the test
+                    </div>
+
+                    <div ng-if="manualTest"><br/>
                         <div ng-include="manualUrl"></div>
                     </div>
 
-                    <div ng-if="manualTest == false">
+                    <div ng-if="!manualTest">
 
                         <div class="text-center showHideButton well">
                             <p class="text-center">
@@ -179,7 +197,7 @@
                                 <span class="label label-warning legend">{{testData.numWarning}} WARNING </span>
                             </div><br/>
                             <ul id="testResultsList">
-                                <li ng-repeat="pageElement in testData.testElements">
+                                <li ng-repeat="pageElement in testData.testElements|orderBy: 'passed'">
 
                                     <div class="imageAltOnHover" ng-mouseenter="highlightImage(pageElement.index, true)" ng-mouseleave="highlightImage(pageElement.index, false)" ng-click="scrollToTheElement(pageElement.index)">
                                         <span ng-if="!pageElement.passed" class="label label-danger"><span class="glyphicon glyphicon-thumbs-down"></span> Element {{pageElement.index + 1}}:</span>
